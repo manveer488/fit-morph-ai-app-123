@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/gemini/(.*)",
+      "destination": "https://generativelanguage.googleapis.com/$1"
+    }
+  ]
+}
