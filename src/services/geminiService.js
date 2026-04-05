@@ -39,31 +39,33 @@ OUTPUT FORMAT (JSON ONLY):
 export async function generateFullFitnessPlan(aiMetrics, userProfile) {
   console.log("Phase 2: Generating Expertise-Driven Transformation Protocols...");
   
-  const prompt = `
-As an expert coach, create a 7-day protocol based on these confirmed metrics:
-- Body Fat: ${aiMetrics.predictedBodyFat}%
-- Muscle Mass: ${aiMetrics.predictedMuscleMass}kg
-- Goal: ${userProfile.goal}
+  const prompt = `Expert fitness coach. Metrics: Body Fat ${aiMetrics.predictedBodyFat}%, Muscle ${aiMetrics.predictedMuscleMass}kg, Goal: ${userProfile.goal}.
 
-TASKS:
-1. Standard Workout (7 days)
-2. Muscle Focus Plan (7 days)
-3. Muscle Recovery Plan (7 days)
-4. Meal Plan (7 days with calories, macros, and concise recipes)
-
-OUTPUT FORMAT (JSON ONLY):
+Create a COMPACT 3-day plan. JSON ONLY, no markdown:
 {
-  "strategy": "Overall approach",
-  "summary": { "targetBodyFat": "...", "expectedWeeklyProgress": "...", "roadmap30Day": "..." },
-  "workoutPlan": [ { "day": "...", "focus": "...", "exercises": [ { "name": "...", "sets": "...", "reps": "...", "imageSearchTerm": "...", "formTips": "..." } ] } ],
-  "muscleFocusPlan": [ { "day": "...", "focus": "...", "exercises": [ { "name": "...", "sets": "...", "reps": "...", "imageSearchTerm": "...", "formTips": "..." } ] } ],
-  "recoveryPlan": [ { "day": "...", "focus": "...", "exercises": [ { "name": "...", "sets": "...", "reps": "...", "imageSearchTerm": "...", "formTips": "..." } ] } ],
+  "strategy": "One sentence approach",
+  "summary": { "targetBodyFat": "X%", "expectedWeeklyProgress": "X", "roadmap30Day": "Brief roadmap" },
+  "workoutPlan": [
+    { "day": "Monday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "10", "formTips": "X" }] },
+    { "day": "Wednesday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "10", "formTips": "X" }] },
+    { "day": "Friday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "10", "formTips": "X" }] }
+  ],
+  "muscleFocusPlan": [
+    { "day": "Monday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "12", "formTips": "X" }] },
+    { "day": "Wednesday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "12", "formTips": "X" }] },
+    { "day": "Friday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "12", "formTips": "X" }] }
+  ],
+  "recoveryPlan": [
+    { "day": "Tuesday", "focus": "Recovery", "exercises": [{ "name": "Stretching", "sets": "1", "reps": "10min", "formTips": "Breathe deeply" }] }
+  ],
   "mealPlan": {
-    "days": [ { "day": "...", "calories": "...", "macros": { "p": "...", "c": "...", "f": "..." }, "meals": { "breakfast": { "title": "...", "imageSearchTerm": "...", "recipe": { "ingredients": ["..."], "instructions": ["..."] } }, "lunch": { ... }, "dinner": { ... } } } ],
-    "guidelines": { "hydration": "...", "avoid": ["..."] }
+    "days": [
+      { "day": "Monday", "calories": 2000, "macros": { "p": "150g", "c": "200g", "f": "65g" }, "meals": { "breakfast": { "title": "X", "recipe": { "ingredients": ["X"], "instructions": ["X"] } }, "lunch": { "title": "X", "recipe": { "ingredients": ["X"], "instructions": ["X"] } }, "dinner": { "title": "X", "recipe": { "ingredients": ["X"], "instructions": ["X"] } } } }
+    ],
+    "guidelines": { "hydration": "3L/day", "avoid": ["processed sugar"] }
   }
-}
-Keep it professional. Monday-Sunday. JSON only.`;
+}`;
+
 
   return await callGeminiWithRetry(GEMINI_API_KEY, prompt);
 }

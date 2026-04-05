@@ -112,7 +112,8 @@ export default function BodyScan() {
     setGenerating(true);
     try {
       setAiAnalysisStep("Securing biometrics...");
-      const resizedBase64 = await resizeImage(file, 1024);
+      // Use 512px to minimize input tokens - reduces quota usage by ~4x vs 1024px
+      const resizedBase64 = await resizeImage(file, 512);
 
       setAiAnalysisStep("Analyzing body physique");
       console.log("Starting Real AI Vision Analysis (Phase 1)...");

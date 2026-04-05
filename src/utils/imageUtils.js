@@ -34,8 +34,8 @@ export async function resizeImage(file, maxDimension = 1024) {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Convert to quality-optimized JPEG to further reduce size
-        resolve(canvas.toDataURL('image/jpeg', 0.8));
+        // 0.6 quality keeps the image clear enough for AI while cutting payload size ~30%
+        resolve(canvas.toDataURL('image/jpeg', 0.6));
       };
       img.onerror = reject;
     };
