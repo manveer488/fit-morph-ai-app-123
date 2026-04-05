@@ -3,6 +3,10 @@
     {
       "source": "/gemini/:path*",
       "destination": "https://generativelanguage.googleapis.com/:path*"
+    },
+    {
+      "source": "/((?!gemini).*)",
+      "destination": "/index.html"
     }
   ]
 }
