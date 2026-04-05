@@ -1,4 +1,5 @@
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const GEMINI_API_KEY_BACKUP = import.meta.env.VITE_GEMINI_API_KEY_BACKUP;
 const GEMINI_MODEL = "gemini-2.0-flash-lite"; // Lower quota usage than gemini-2.0-flash
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -78,18 +79,33 @@ export async function generateTransformationPlan(scanData, userProfile, base64Im
 }
 
 // Retries callGemini up to 3 times on quota/rate-limit errors, with a 12s wait between each.
+// Falls back to backup key if primary key is exhausted.
 async function callGeminiWithRetry(apiKey, prompt, base64Image = null) {
-  const MAX_RETRIES = 3;
+  const MAX_RETRIES = 2;
   const RETRY_DELAY_MS = 12000;
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       return await callGemini(apiKey, prompt, base64Image);
     } catch (err) {
+      const isQuota = err.message.includes("AI servers busy");
       const isLastAttempt = attempt === MAX_RETRIES;
-      if (isLastAttempt || !err.message.includes("AI servers busy")) {
-        throw err; // Rethrow non-quota errors or after exhausting retries
+
+      if (!isQuota) throw err; // Non-quota errors → fail immediately
+
+      if (isLastAttempt) {
+        // Try backup key before giving up
+        if (GEMINI_API_KEY_BACKUP && GEMINI_API_KEY_BACKUP !== apiKey) {
+          console.warn("Primary key exhausted. Trying backup API key...");
+          try {
+            return await callGemini(GEMINI_API_KEY_BACKUP, prompt, base64Image);
+          } catch (backupErr) {
+            throw backupErr; // Both keys failed
+          }
+        }
+        throw err;
       }
+
       console.warn(`Quota hit. Auto-retrying in ${RETRY_DELAY_MS / 1000}s... (Attempt ${attempt}/${MAX_RETRIES})`);
       await sleep(RETRY_DELAY_MS);
     }
