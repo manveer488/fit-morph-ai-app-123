@@ -1,6 +1,13 @@
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_MODEL = "gemini-2.0-flash-lite"; // Lower quota usage than gemini-2.0-flash
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const isQuotaError = (msg, status) =>
+  status === "RESOURCE_EXHAUSTED" ||
+  (msg || "").toLowerCase().includes("quota") ||
+  (msg || "").toLowerCase().includes("rate limit") ||
+  (msg || "").toLowerCase().includes("resource_exhausted");
+
 /**
  * PHASE 1: Vision Analysis
  */
@@ -22,7 +29,7 @@ OUTPUT FORMAT (JSON ONLY):
   "physiqueAssessment": "Short professional paragraph (30 words max)."
 }`;
 
-  return await callGemini(GEMINI_API_KEY, prompt, base64Image);
+  return await callGeminiWithRetry(GEMINI_API_KEY, prompt, base64Image);
 }
 
 /**
@@ -57,7 +64,7 @@ OUTPUT FORMAT (JSON ONLY):
 }
 Keep it professional. Monday-Sunday. JSON only.`;
 
-  return await callGemini(GEMINI_API_KEY, prompt);
+  return await callGeminiWithRetry(GEMINI_API_KEY, prompt);
 }
 
 // Deprecated: Keeping for compatibility
@@ -68,6 +75,25 @@ export async function generateTransformationPlan(scanData, userProfile, base64Im
     return await generateFullFitnessPlan(metrics, userProfile);
   }
   return await generateFullFitnessPlan(scanData, userProfile);
+}
+
+// Retries callGemini up to 3 times on quota/rate-limit errors, with a 12s wait between each.
+async function callGeminiWithRetry(apiKey, prompt, base64Image = null) {
+  const MAX_RETRIES = 3;
+  const RETRY_DELAY_MS = 12000;
+
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      return await callGemini(apiKey, prompt, base64Image);
+    } catch (err) {
+      const isLastAttempt = attempt === MAX_RETRIES;
+      if (isLastAttempt || !err.message.includes("AI servers busy")) {
+        throw err; // Rethrow non-quota errors or after exhausting retries
+      }
+      console.warn(`Quota hit. Auto-retrying in ${RETRY_DELAY_MS / 1000}s... (Attempt ${attempt}/${MAX_RETRIES})`);
+      await sleep(RETRY_DELAY_MS);
+    }
+  }
 }
 
 async function callGemini(apiKey, prompt, base64Image = null) {
