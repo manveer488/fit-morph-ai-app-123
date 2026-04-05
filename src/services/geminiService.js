@@ -1,5 +1,5 @@
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const GEMINI_MODEL = "gemini-2.0-flash"; 
+const GEMINI_MODEL = "gemini-2.0-flash-lite"; // Lower quota usage than gemini-2.0-flash
 
 /**
  * PHASE 1: Vision Analysis
@@ -102,7 +102,18 @@ async function callGemini(apiKey, prompt, base64Image = null) {
   const data = await response.json();
   if (!response.ok) {
     console.error("Gemini API Error Response:", data);
-    throw new Error(data.error?.message || "Gemini AI request failed");
+    const errMsg = data.error?.message || "";
+    const status = data.error?.status || "";
+    // Detect quota exceeded errors specifically
+    if (
+      status === "RESOURCE_EXHAUSTED" ||
+      errMsg.toLowerCase().includes("quota") ||
+      errMsg.toLowerCase().includes("rate limit") ||
+      errMsg.toLowerCase().includes("resource_exhausted")
+    ) {
+      throw new Error("AI servers busy. Please try again in 10 seconds.");
+    }
+    throw new Error(errMsg || "Gemini AI request failed");
   }
 
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
