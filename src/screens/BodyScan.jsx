@@ -141,7 +141,8 @@ export default function BodyScan() {
 
     } catch (err) {
       console.error("Real AI analysis failed:", err);
-      alert("AI Vision synchronization interrupted. Please check your connection and try again.");
+      // SHOWING THE ACTUAL MESSAGE helps the user fix Vercel/Proxy issues
+      alert("AI Analysis Error: " + (err.message || "Unknown error during synchronization"));
     } finally {
       setGenerating(false);
     }

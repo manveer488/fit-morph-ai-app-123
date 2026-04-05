@@ -91,10 +91,12 @@ export async function generateTransformationPlan(scanData, userProfile, base64Im
 }
 
 async function callGemini(apiKey, prompt, base64Image = null) {
-  if (!apiKey) {
-    throw new Error("Gemini API Key is missing. Check your .env file.");
+  if (!apiKey || apiKey === "undefined") {
+    // This is the most common reason for crashes on Vercel
+    throw new Error("Gemini API Key is NOT configured in Vercel. Please add 'VITE_GEMINI_API_KEY' to your Vercel Environment Variables.");
   }
 
+  // Use the proxied URL for consistency in dev and production (Vercel Rewrite)
   const url = `/gemini/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
 
   if (base64Image) {
