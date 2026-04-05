@@ -142,8 +142,21 @@ export default function BodyScan() {
 
     } catch (err) {
       console.error("Real AI analysis failed:", err);
-      // SHOWING THE ACTUAL MESSAGE helps the user fix Vercel/Proxy issues
-      alert("AI Analysis Error: " + (err.message || "Unknown error during synchronization"));
+      
+      const isQuotaErr = err.message.includes("AI servers busy") || 
+                         err.message.includes("quota") || 
+                         err.message.includes("RESOURCE_EXHAUSTED");
+      
+      if (isQuotaErr) {
+        // Graceful fallback: save the MediaPipe scan data and go to dashboard
+        // The user still gets a result — just without the AI-enhanced metrics
+        console.warn("Gemini quota exceeded. Falling back to MediaPipe scan data.");
+        const fallbackMetrics = scanResult.metrics || scanResult;
+        saveScanResult(fallbackMetrics, null);
+        // Don't show an error — the useEffect will navigate to dashboard
+      } else {
+        alert("AI Analysis Error: " + (err.message || "Unknown error"));
+      }
     } finally {
       setGenerating(false);
     }

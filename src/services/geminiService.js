@@ -1,6 +1,6 @@
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_API_KEY_BACKUP = import.meta.env.VITE_GEMINI_API_KEY_BACKUP;
-const GEMINI_MODEL = "gemini-2.0-flash-lite"; // Lower quota usage than gemini-2.0-flash
+const GEMINI_MODEL = "gemini-2.5-flash"; // gemini-2.0 series has 0 free-tier quota for this project/region
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const isQuotaError = (msg, status) =>
