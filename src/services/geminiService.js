@@ -117,7 +117,13 @@ async function callGemini(apiKey, prompt, base64Image = null) {
     throw new Error("Gemini API Key is NOT configured in Vercel. Please add 'VITE_GEMINI_API_KEY' to your Vercel Environment Variables.");
   }
 
-  const url = `/gemini/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
+  // In production (Vercel), call the API directly to avoid proxy issues.
+  // In local dev, use the Vite proxy (/gemini) to avoid CORS issues.
+  const isProduction = import.meta.env.PROD;
+  const baseUrl = isProduction
+    ? `https://generativelanguage.googleapis.com`
+    : ``; // empty = relative URL, handled by Vite proxy
+  const url = `${baseUrl}/gemini/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
 
   let body;
   if (base64Image) {
