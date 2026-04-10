@@ -182,25 +182,26 @@ export default function Dashboard() {
             </div>
           </section>
 
-          {/* Calorie Widget */}
-          <section className="grid grid-cols-3 gap-4 p-4 rounded-xl bg-card-dark border border-slate-800 shrink-0">
-            <div className="flex flex-col items-center text-center">
-              <span className="text-xs text-slate-500 mb-1 leading-none">Eaten</span>
-              <span className="text-lg font-bold text-accent-aqua">{aiPlan?.mealPlan?.macros?.kcal || user.aiPlan?.mealPlan?.dailyCalories || 0}</span>
-              <span className="text-[8px] text-slate-400 uppercase">kcal</span>
-            </div>
-            <div className="flex flex-col items-center text-center border-x border-slate-800">
-              <span className="text-xs text-slate-500 mb-1 leading-none">Burned</span>
-              <span className="text-lg font-bold text-primary">1,240</span>
-              <span className="text-[8px] text-slate-400 uppercase">kcal</span>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <span className="text-xs text-slate-500 mb-1 leading-none">Steps</span>
-              <span className="text-lg font-bold text-white">8,420</span>
-              <span className="text-[8px] text-slate-400 uppercase">Today</span>
-            </div>
-          </section>
-        </main>
+            {/* Calorie Widget */}
+            <section className="grid grid-cols-3 gap-4 p-4 rounded-xl bg-card-dark border border-slate-800 shrink-0">
+              <div className="flex flex-col items-center text-center">
+                <span className="text-xs text-slate-500 mb-1 leading-none">Eaten</span>
+                <span className="text-lg font-bold text-accent-aqua">{aiPlan?.mealPlan?.macros?.kcal || user.aiPlan?.mealPlan?.dailyCalories || 0}</span>
+                <span className="text-[8px] text-slate-400 uppercase">kcal</span>
+              </div>
+              <div className="flex flex-col items-center text-center border-x border-slate-800">
+                <span className="text-xs text-slate-500 mb-1 leading-none">Burned</span>
+                <span className="text-lg font-bold text-primary">1,240</span>
+                <span className="text-[8px] text-slate-400 uppercase">kcal</span>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <span className="text-xs text-slate-500 mb-1 leading-none">Steps</span>
+                <span className="text-lg font-bold text-white">8,420</span>
+                <span className="text-[8px] text-slate-400 uppercase">Today</span>
+              </div>
+            </section>
+          </main>
+        </div>
 
         {/* Bottom Navigation Bar */}
         <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50">
