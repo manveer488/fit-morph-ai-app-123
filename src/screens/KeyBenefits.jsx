@@ -50,7 +50,7 @@ export default function KeyBenefits() {
               </div>
               <div 
                 className="w-24 h-24 bg-center bg-no-repeat bg-cover rounded-lg shrink-0 border border-white/10" 
-                style={{ backgroundImage: `url('https://images.unsplash.com/photo-1549476464-37392f717541?q=80&w=1000&auto=format&fit=crop')` }}
+                style={{ backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuBykp06im9aAxhAMwJ_M1IbOlVRp21s8983dTpSxkWF5peKVWSkYDR3c4AimDzDFm3VwB-akzmyry66WvtM0e005MuH9RgME0ECBsS1zVeIJRFHtCHsUIX1AwHaHJf0jx_Nrrto1Ubcng5POYI8b3ojbZ3fBcvy_UDLKTNof_bmZr14jBjEjnCR9i9r3BKdmPX2JUdmH7wnCM7YahIqOJmSF7gnJ6-40TwhJAkEkluAM3j0es20M6AyQLIEdD_3N5lVNo6TAtTTZVb2')` }}
               ></div>
             </div>
           </div>
@@ -70,7 +70,7 @@ export default function KeyBenefits() {
               </div>
               <div 
                 className="w-24 h-24 bg-center bg-no-repeat bg-cover rounded-lg shrink-0 border border-white/10" 
-                style={{ backgroundImage: `url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop')` }}
+                style={{ backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuCmYcVHZE8r2VO1KkNYthW9MGn2FBsUoPCBn9-5fdA809qrlgbtGIhWKjGb7qX0_8f5qPAgwLfTvLZXeuA7DQlTc4r2qGOgLJl3YTHA1O4oXPan703CjLLUDTsZ_boGnn7yzzwgZmOgIjF8DP2ubho4GWIA1bXjrvJ_MExyYkPRxg6bBbM4NpVOZact1OdNkQRjk9SVaCUeFYG8bZMnn4L3U3bJ-xC8FFVo6b0LawefuZlxR2Ex-Fpn-Nv5FbgmJX44BW7KOAmi7i8y')` }}
               ></div>
             </div>
           </div>
@@ -90,7 +90,7 @@ export default function KeyBenefits() {
               </div>
               <div 
                 className="w-24 h-24 bg-center bg-no-repeat bg-cover rounded-lg shrink-0 border border-white/10" 
-                style={{ backgroundImage: `url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000&auto=format&fit=crop')` }}
+                style={{ backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuAfqUS5AjRH1QiUrqi-1UM-jlZmevBN94vsoseDxHnShkRd_GgI88DcJPBeHuofgI0ukpm4qrGHjq7QszQ2j_DzyTb1H9xqnJzFq4NTjbiNYpQR0Z1vf2BYSTIPhhYbYVh_2F2EpC1Lp4g92MxPhzukkWvPF6os08faJ785lRBEyiOARUSie1gBi6XT0sUV6tZ60WBhmQCeIilASQ6PtD7IJlZiFAFv1lL967KQTtSYiwLvsFXfwVh_t7lS5UHEZiEuyIyRtMP5wH9y')` }}
               ></div>
             </div>
           </div>
