@@ -19,27 +19,45 @@ export default function Welcome() {
         </div>
 
         {/* Content Section */}
-        <div className="flex-1 flex flex-col items-center px-6">
-          {/* Hero Image / Hologram Placeholder */}
-          <div className="relative w-full aspect-square mt-4 mb-8 shrink-0">
-            <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full"></div>
-            <div className="relative w-full h-full rounded-xl overflow-hidden glass-panel flex items-center justify-center">
-              <div 
-                className="w-full h-full bg-center bg-no-repeat bg-cover opacity-90 transition-opacity duration-1000 animate-zoom" 
-                style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80")' }}
-              ></div>
-              {/* Overlay Grid for High-Tech feel */}
-              <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,242,255,0.1)_1px,transparent_1px)] bg-[length:20px_20px] pointer-events-none"></div>
+        <div className="flex-1 flex flex-col items-center px-6 pt-4">
+          {/* Hero Hero Section */}
+          <div className="relative w-full aspect-[4/5] mb-10 shrink-0 group">
+            <div className="absolute -inset-4 bg-primary/20 blur-[60px] rounded-full group-hover:bg-primary/30 transition-all duration-1000"></div>
+            <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden border border-white/20 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] bg-card-dark">
+              <img 
+                src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80" 
+                className="w-full h-full object-cover animate-zoom" 
+                alt="Fitness Hero"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent opacity-80"></div>
+              
+              {/* Dynamic Overlay Elements */}
+              <div className="absolute bottom-6 left-6 right-6 p-4 glass-panel rounded-2xl border border-white/10 animate-fade-in-up">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-full bg-accent-aqua/20 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-accent-aqua">auto_awesome</span>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-accent-aqua leading-none mb-1">AI Protocol</p>
+                    <p className="text-white font-bold text-sm">Neural Transformation Active</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Floaties */}
+            <div className="absolute -top-4 -right-4 size-20 glass-panel rounded-full flex items-center justify-center border border-white/20 animate-bounce" style={{ animationDuration: '4s' }}>
+                <span className="material-symbols-outlined text-3xl text-primary">monitoring</span>
             </div>
           </div>
 
           {/* Text Content */}
-          <div className="space-y-4 text-center">
-            <h1 className="font-urbanist text-4xl font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
-              Welcome to <span className="text-primary">FitMorph AI</span>
+          <div className="space-y-3 text-center mb-8">
+            <h1 className="font-urbanist text-5xl font-black leading-tight tracking-tighter text-slate-900 dark:text-white">
+              FitMorph <span className="text-primary italic">AI</span>
             </h1>
-            <p className="text-lg font-normal leading-relaxed text-slate-600 dark:text-slate-400 max-w-[280px] mx-auto">
-              Your AI-powered body transformation journey starts now
+            <p className="text-base font-medium leading-relaxed text-slate-500 dark:text-slate-400 max-w-[280px] mx-auto uppercase tracking-widest">
+              Biometric Evolution Engine
             </p>
           </div>
 

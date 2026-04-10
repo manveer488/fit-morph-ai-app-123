@@ -241,30 +241,35 @@ async function callGemini(apiKey, prompt, base64Image = null, model = GEMINI_MOD
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     let parsedData = jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(text);
     
-    // Normalize metrics
+    // Normalize metrics and validation fields
     const cleanMetric = (val) => val ? val.toString().replace(/[^\d.]/g, '') : "---";
 
     const normalizedData = {
+      // Include validation fields if present (from Phase 1 prompt)
+      isValid: parsedData.isValid ?? true, 
+      userMessage: parsedData.userMessage || "NONE",
+      errorType: parsedData.errorType || "NONE",
+
+      // Combined Metrics
+      metrics: parsedData.metrics || {
+        predictedBodyFat: cleanMetric(parsedData.predictedBodyFat || parsedData.bodyFat),
+        predictedMuscleMass: cleanMetric(parsedData.predictedMuscleMass || parsedData.muscleMass),
+        physiqueAssessment: parsedData.physiqueAssessment || parsedData.assessment || ""
+      },
+      
+      // Fallback for screens expecting 'aiAnalysis'
       aiAnalysis: parsedData.aiAnalysis || {
         predictedBodyFat: cleanMetric(parsedData.predictedBodyFat || parsedData.bodyFat),
         predictedMuscleMass: cleanMetric(parsedData.predictedMuscleMass || parsedData.muscleMass),
-        physiqueAssessment: parsedData.physiqueAssessment || parsedData.assessment
+        physiqueAssessment: parsedData.physiqueAssessment || parsedData.assessment || ""
       },
+      
       strategy: parsedData.strategy || "Maintain consistency.",
       summary: parsedData.summary || "Transformation roadmap synchronized.",
       workoutPlan: parsedData.workoutPlan || parsedData.workout || [],
       recoveryPlan: parsedData.recoveryPlan || {},
       mealPlan: parsedData.mealPlan || parsedData.dietPlan || parsedData.diet || { days: [], guidelines: {} }
     };
-
-    // Edge case: if metrics are nested directly at the top level
-    if (!parsedData.aiAnalysis && (parsedData.predictedBodyFat || parsedData.bodyFat)) {
-      normalizedData.aiAnalysis = {
-        predictedBodyFat: cleanMetric(parsedData.predictedBodyFat || parsedData.bodyFat),
-        predictedMuscleMass: cleanMetric(parsedData.predictedMuscleMass || parsedData.muscleMass),
-        physiqueAssessment: parsedData.physiqueAssessment || parsedData.assessment
-      };
-    }
 
     // Store globally for quick access
     if (!window.fitmorphData) window.fitmorphData = {};

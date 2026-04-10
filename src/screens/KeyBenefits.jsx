@@ -40,62 +40,74 @@ export default function KeyBenefits() {
         {/* Features Section (Glassmorphism Cards) */}
         <main className="p-6 flex flex-col gap-6 overflow-y-auto flex-1">
           {/* Benefit 1: AI Body Analysis */}
-          <div className="relative group">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent-aqua rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-            <div className="relative flex items-center justify-between gap-4 rounded-xl bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 p-5 shadow-xl">
-              <div className="flex flex-col gap-1.5 flex-[2_2_0px]">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="material-symbols-outlined text-accent-aqua text-2xl">android_fingerprint</span>
-                  <p className="text-slate-900 dark:text-white text-lg font-bold leading-tight">AI Body Analysis</p>
+          <div className="relative group overflow-hidden rounded-3xl">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent-aqua/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+            <div className="relative flex flex-col gap-0 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden shadow-2xl transition-all hover:border-primary/30">
+              <div className="h-40 w-full overflow-hidden relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  alt="AI Analysis"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
+                <div className="absolute bottom-4 left-5 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary text-2xl drop-shadow-[0_0_8px_rgba(110,61,255,1)]">android_fingerprint</span>
+                  <h3 className="text-white text-xl font-bold tracking-tight">AI Body Analysis</h3>
                 </div>
-                <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-normal italic-none">
-                  High-precision 3D scanning for real-time tracking of your physical evolution.
+              </div>
+              <div className="p-5 pt-2">
+                <p className="text-slate-400 text-sm font-medium leading-relaxed">
+                  High-precision 3D scanning for real-time tracking of your physical evolution and biometric balance.
                 </p>
               </div>
-              <div 
-                className="w-24 h-24 bg-center bg-no-repeat bg-cover rounded-lg shrink-0 border border-white/10" 
-                style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&q=80")' }}
-              ></div>
             </div>
           </div>
 
-          {/* Benefit 2: Personalized Workouts */}
-          <div className="relative group">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-accent-aqua to-primary rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-            <div className="relative flex items-center justify-between gap-4 rounded-xl bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 p-5 shadow-xl">
-              <div className="flex flex-col gap-1.5 flex-[2_2_0px]">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="material-symbols-outlined text-primary text-2xl">fitness_center</span>
-                  <p className="text-slate-900 dark:text-white text-lg font-bold leading-tight">Smart Workouts</p>
+          {/* Benefit 2: Smart Workouts */}
+          <div className="relative group overflow-hidden rounded-3xl">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent-aqua/20 to-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+            <div className="relative flex flex-col gap-0 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden shadow-2xl transition-all hover:border-accent-aqua/30">
+              <div className="h-40 w-full overflow-hidden relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1541534741688-6078c64b52d2?w=800&q=80" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  alt="Workouts"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
+                <div className="absolute bottom-4 left-5 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-accent-aqua text-2xl drop-shadow-[0_0_8px_rgba(0,242,234,1)]">fitness_center</span>
+                  <h3 className="text-white text-xl font-bold tracking-tight">Smart Workouts</h3>
                 </div>
-                <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-normal italic-none">
-                  Dynamic training plans that adapt instantly based on your performance.
+              </div>
+              <div className="p-5 pt-2">
+                <p className="text-slate-400 text-sm font-medium leading-relaxed">
+                  Dynamic training plans that adapt instantly based on your performance, metabolic data, and recovery speed.
                 </p>
               </div>
-              <div 
-                className="w-24 h-24 bg-center bg-no-repeat bg-cover rounded-lg shrink-0 border border-white/10" 
-                style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1541534741688-6078c64b52d2?w=400&q=80")' }}
-              ></div>
             </div>
           </div>
 
           {/* Benefit 3: Smart Diet Planning */}
-          <div className="relative group">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary via-accent-aqua to-primary rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-            <div className="relative flex items-center justify-between gap-4 rounded-xl bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 p-5 shadow-xl">
-              <div className="flex flex-col gap-1.5 flex-[2_2_0px]">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="material-symbols-outlined text-accent-aqua text-2xl">restaurant</span>
-                  <p className="text-slate-900 dark:text-white text-lg font-bold leading-tight">Diet Tracking</p>
+          <div className="relative group overflow-hidden rounded-3xl">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent-pink/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+            <div className="relative flex flex-col gap-0 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden shadow-2xl transition-all hover:border-primary/30">
+              <div className="h-40 w-full overflow-hidden relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  alt="Nutrition"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
+                <div className="absolute bottom-4 left-5 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-accent-pink text-2xl drop-shadow-[0_0_8px_rgba(255,0,229,1)]">restaurant</span>
+                  <h3 className="text-white text-xl font-bold tracking-tight">Diet Tracking</h3>
                 </div>
-                <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-normal italic-none">
-                  Hyper-personalized nutrition insights with real-time macro adjustments.
+              </div>
+              <div className="p-5 pt-2">
+                <p className="text-slate-400 text-sm font-medium leading-relaxed">
+                  Hyper-personalized nutrition insights with real-time macro adjustments to fuel your specific goals.
                 </p>
               </div>
-              <div 
-                className="w-24 h-24 bg-center bg-no-repeat bg-cover rounded-lg shrink-0 border border-white/10" 
-                style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&q=80")' }}
-              ></div>
             </div>
           </div>
         </main>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MobileContainer from '../components/MobileContainer.jsx';
 import { analyzeBody } from '../services/ai';
-import { analyzePhysique, generateFullFitnessPlan } from '../services/geminiService';
+import { validateAndAnalyzePhysique, generateFullFitnessPlan } from '../services/geminiService';
 import { useUser } from '../contexts/UserContext.jsx';
 import { resizeImage } from '../utils/imageUtils';
 
@@ -112,7 +112,8 @@ export default function BodyScan() {
       navigate('/dashboard');
     } catch (err) {
       console.error("AI Analysis failed:", err);
-      alert("AI Analysis failed due to network intensity. Please try again in a few moments.");
+      const errorMsg = err.message || "AI Analysis failed due to high server demand. Please try again in 5 minutes.";
+      alert(errorMsg);
     } finally {
       setGenerating(false);
     }
