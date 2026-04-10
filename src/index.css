@@ -4,10 +4,16 @@
 
 @layer components {
   .glass-panel {
-    @apply bg-primary/5 backdrop-blur-[12px] border border-white/10;
+    background: rgba(110, 61, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    @apply border border-white/10;
   }
   .glass-card {
-    @apply bg-primary/5 backdrop-blur-[12px] border border-primary/20;
+    background: rgba(110, 61, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    @apply border border-primary/20;
   }
   .neon-glow {
     @apply shadow-[0_0_20px_rgba(0,242,255,0.4)];

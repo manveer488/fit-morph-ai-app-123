@@ -9,7 +9,6 @@ export default function Join() {
   const handleJoin = (e) => {
     e.preventDefault();
     if (email) {
-      // Mock login/signup for this demo
       localStorage.setItem('userEmail', email);
       navigate('/dashboard');
     }
@@ -27,25 +26,26 @@ export default function Join() {
             <span className="material-symbols-outlined">arrow_back_ios_new</span>
           </button>
           <div className="text-xs font-bold tracking-widest uppercase opacity-50">Step 3 of 3</div>
-          <div className="size-10"></div> {/* Spacer for centering */}
+          <div className="size-10"></div>
         </div>
 
-        {/* Hero Section with Fitness Silhouette Concept */}
-        <div className="relative flex-1 @container">
+        {/* Content Area */}
+        <div className="relative flex-1 px-6 flex flex-col justify-center">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/30 via-transparent to-background-dark/90 z-0"></div>
-          <div className="relative w-full h-full px-6 flex flex-col justify-center">
+          
+          <div className="relative z-10">
             <div className="w-full aspect-square rounded-full bg-primary/20 blur-3xl absolute -top-20 -right-20 animate-pulse"></div>
             
-            {/* Mock Fitness Silhouette Visualization */}
+            {/* Silhouette Asset */}
             <div 
               className="relative w-full h-80 bg-cover bg-center rounded-xl overflow-hidden shadow-2xl border border-white/5" 
-              style={{ backgroundImage: "url('/assets/join_silhouette.png')" }}
+              style={{ backgroundImage: "url('/assets/remaining_assets.png')", backgroundPosition: 'left top', backgroundSize: '200%' }}
             >
               <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
             </div>
 
             <div className="mt-8">
-              <h1 className="text-slate-100 tracking-tight text-4xl font-bold leading-tight text-left italic-none">
+              <h1 className="text-slate-100 tracking-tight text-4xl font-extrabold leading-tight text-left font-urbanist italic-none">
                 Join FitMorph AI
               </h1>
               <p className="text-slate-400 text-lg font-normal leading-relaxed mt-3 text-left italic-none">
@@ -80,12 +80,10 @@ export default function Join() {
 
             <div className="mt-6 flex items-center justify-center gap-4 text-sm font-medium">
               <span className="text-slate-500">Already a member?</span>
-              <button className="text-primary font-bold hover:underline">Log In</button>
+              <button type="button" className="text-primary font-bold hover:underline">Log In</button>
             </div>
           </div>
         </div>
-
-        {/* Home Indicator Spacer if needed - MobileContainer has one */}
       </div>
     </MobileContainer>
   );
