@@ -5,9 +5,14 @@ const GEMINI_MODEL = "gemini-2.5-flash"; // gemini-2.0 series has 0 free-tier qu
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const isQuotaError = (msg, status) =>
   status === "RESOURCE_EXHAUSTED" ||
+  status === "UNAVAILABLE" ||
+  status === 503 ||
   (msg || "").toLowerCase().includes("quota") ||
   (msg || "").toLowerCase().includes("rate limit") ||
-  (msg || "").toLowerCase().includes("resource_exhausted");
+  (msg || "").toLowerCase().includes("resource_exhausted") ||
+  (msg || "").toLowerCase().includes("high demand") ||
+  (msg || "").toLowerCase().includes("spikes in demand") ||
+  (msg || "").toLowerCase().includes("overloaded");
 
 /**
  * PHASE 1: Vision Analysis
@@ -110,41 +115,40 @@ export async function generateTransformationPlan(scanData, userProfile, base64Im
   return await generateFullFitnessPlan(scanData, userProfile);
 }
 
-// Retries callGemini up to 3 times on quota/rate-limit errors, with a 12s wait between each.
-// Falls back to backup key if primary key is exhausted.
+// Retries callGemini using multiple fallback models on quota/rate-limit/demand errors
 async function callGeminiWithRetry(apiKey, prompt, base64Image = null) {
-  const MAX_RETRIES = 2;
-  const RETRY_DELAY_MS = 12000;
+  const modelsToTry = [GEMINI_MODEL, "gemini-1.5-flash", "gemini-1.5-pro", "gemini-1.0-pro"];
+  const RETRY_DELAY_MS = 2000;
 
-  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+  for (let attempt = 0; attempt < modelsToTry.length; attempt++) {
+    const currentModel = modelsToTry[attempt];
     try {
-      return await callGemini(apiKey, prompt, base64Image);
+      return await callGemini(apiKey, prompt, base64Image, currentModel);
     } catch (err) {
-      const isQuota = err.message.includes("AI servers busy");
-      const isLastAttempt = attempt === MAX_RETRIES;
+      if (!err.isQuota) throw err; // Non-quota errors -> fail immediately
 
-      if (!isQuota) throw err; // Non-quota errors → fail immediately
-
+      console.warn(`Model ${currentModel} busy or hit limit. Trying next...`);
+      
+      const isLastAttempt = attempt === modelsToTry.length - 1;
       if (isLastAttempt) {
         // Try backup key before giving up
         if (GEMINI_API_KEY_BACKUP && GEMINI_API_KEY_BACKUP !== apiKey) {
-          console.warn("Primary key exhausted. Trying backup API key...");
+          console.warn("Primary key exhausted. Trying backup API key with primary model...");
           try {
-            return await callGemini(GEMINI_API_KEY_BACKUP, prompt, base64Image);
+            return await callGemini(GEMINI_API_KEY_BACKUP, prompt, base64Image, GEMINI_MODEL);
           } catch (backupErr) {
             throw backupErr; // Both keys failed
           }
         }
-        throw err;
+        throw new Error("AI servers are experiencing exceptionally high demand. Please try again in 5 minutes.");
       }
 
-      console.warn(`Quota hit. Auto-retrying in ${RETRY_DELAY_MS / 1000}s... (Attempt ${attempt}/${MAX_RETRIES})`);
       await sleep(RETRY_DELAY_MS);
     }
   }
 }
 
-async function callGemini(apiKey, prompt, base64Image = null) {
+async function callGemini(apiKey, prompt, base64Image = null, model = GEMINI_MODEL) {
   if (!apiKey || apiKey === "undefined") {
     throw new Error("Gemini API Key is NOT configured in Vercel. Please add 'VITE_GEMINI_API_KEY' to your Vercel Environment Variables.");
   }
@@ -152,7 +156,7 @@ async function callGemini(apiKey, prompt, base64Image = null) {
   // Always use the /gemini proxy path.
   // - In local dev: Vite proxy rewrites /gemini -> https://generativelanguage.googleapis.com
   // - In production (Vercel): vercel.json rewrite handles /gemini -> https://generativelanguage.googleapis.com
-  const url = `/gemini/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
+  const url = `/gemini/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
   let body;
   if (base64Image) {
@@ -178,18 +182,17 @@ async function callGemini(apiKey, prompt, base64Image = null) {
 
   const data = await response.json();
   if (!response.ok) {
-    console.error("Gemini API Error Response:", data);
+    console.error(`Gemini API Error Response (${model}):`, data);
     const errMsg = data.error?.message || "";
-    const status = data.error?.status || "";
-    // Detect quota exceeded errors specifically
-    if (
-      status === "RESOURCE_EXHAUSTED" ||
-      errMsg.toLowerCase().includes("quota") ||
-      errMsg.toLowerCase().includes("rate limit") ||
-      errMsg.toLowerCase().includes("resource_exhausted")
-    ) {
-      throw new Error("AI servers busy. Please try again in 10 seconds.");
+    const status = data.error?.status || response.status;
+    
+    // Detect quota exceeded and high demand errors specifically
+    if (isQuotaError(errMsg, status)) {
+      const err = new Error(`AI model ${model} busy: ` + (errMsg || "High Demand"));
+      err.isQuota = true;
+      throw err;
     }
+    
     throw new Error(errMsg || "Gemini AI request failed");
   }
 
