@@ -39,30 +39,60 @@ OUTPUT FORMAT (JSON ONLY):
 export async function generateFullFitnessPlan(aiMetrics, userProfile) {
   console.log("Phase 2: Generating Expertise-Driven Transformation Protocols...");
   
-  const prompt = `Expert fitness coach. Metrics: Body Fat ${aiMetrics.predictedBodyFat}%, Muscle ${aiMetrics.predictedMuscleMass}kg, Goal: ${userProfile.goal}.
+  const prompt = `You are an expert fitness coach, nutritionist, and body-transformation specialist.
+Generate a highly personalized Workout Plan + Diet Plan based only on the data I provide.
 
-Create a COMPACT 3-day plan. JSON ONLY, no markdown:
+### USER INPUT:
+- Age: ${userProfile.age}
+- Gender: ${userProfile.gender}
+- Height: ${userProfile.height}
+- Weight: ${userProfile.weight}
+- Muscle Mass: ${aiMetrics.predictedMuscleMass} kg
+- Body Fat: ${aiMetrics.predictedBodyFat} %
+- Fitness Goal: ${userProfile.goal} (examples: fat loss, muscle gain, recomposition)
+- Activity Level: ${userProfile.activityLevel || 'active'}
+
+### OUTPUT FORMAT (JSON ONLY, NO MARKDOWN, NO \`\`\`json FORMATTING):
 {
-  "strategy": "One sentence approach",
+  "strategy": "Current body condition, metabolic status, and main areas to improve.",
   "summary": { "targetBodyFat": "X%", "expectedWeeklyProgress": "X", "roadmap30Day": "Brief roadmap" },
   "workoutPlan": [
-    { "day": "Monday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "10", "formTips": "X" }] },
-    { "day": "Wednesday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "10", "formTips": "X" }] },
-    { "day": "Friday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "10", "formTips": "X" }] }
+    // Provide a precise 7-Day Workout Plan
+    { "day": "Monday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
+    { "day": "Tuesday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
+    { "day": "Wednesday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
+    { "day": "Thursday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
+    { "day": "Friday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
+    { "day": "Saturday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
+    { "day": "Sunday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] }
   ],
   "muscleFocusPlan": [
-    { "day": "Monday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "12", "formTips": "X" }] },
-    { "day": "Wednesday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "12", "formTips": "X" }] },
-    { "day": "Friday", "focus": "X", "exercises": [{ "name": "X", "sets": "3", "reps": "12", "formTips": "X" }] }
+    // Provide deep breakdown on muscle engagement
+    { "day": "Monday", "focus": "X", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] }
   ],
   "recoveryPlan": [
-    { "day": "Tuesday", "focus": "Recovery", "exercises": [{ "name": "Stretching", "sets": "1", "reps": "10min", "formTips": "Breathe deeply" }] }
+    // Muscle Recovery Plan (24-Hour Recovery Steps, 72-Hour Plan, Sleep Tips, Nutrition for Faster Recovery, Safe Optional Supplements)
+    { "day": "Tuesday", "focus": "Recovery", "exercises": [{ "name": "Foam rolling", "sets": "1", "reps": "10min", "formTips": "Hydration and sleep tips" }] },
+    { "day": "Sunday", "focus": "Rest", "exercises": [{ "name": "Stretching", "sets": "1", "reps": "15min", "formTips": "Mobility work" }]}
   ],
   "mealPlan": {
     "days": [
-      { "day": "Monday", "calories": 2000, "macros": { "p": "150g", "c": "200g", "f": "65g" }, "meals": { "breakfast": { "title": "X", "recipe": { "ingredients": ["X"], "instructions": ["X"] } }, "lunch": { "title": "X", "recipe": { "ingredients": ["X"], "instructions": ["X"] } }, "dinner": { "title": "X", "recipe": { "ingredients": ["X"], "instructions": ["X"] } } } }
+      // Full 7-Day Personalized Diet Plan
+      { "day": "Monday", "calories": 2000, "macros": { "p": "150g", "c": "200g", "f": "65g" }, 
+        "meals": { 
+          "breakfast": { "title": "Breakfast Name", "imageSearchTerm": "breakfast food photography", "recipe": { "ingredients": ["Quick cooking / Indian food alternative ingredients..."], "instructions": ["Calories + macros..."] } }, 
+          "snack1": { "title": "Snack", "imageSearchTerm": "healthy snack", "recipe": { "ingredients": ["..."], "instructions": ["..."] } },
+          "lunch": { "title": "Lunch Name", "imageSearchTerm": "lunch healthy meal", "recipe": { "ingredients": ["..."], "instructions": ["..."] } }, 
+          "snack2": { "title": "Snack", "imageSearchTerm": "healthy snack", "recipe": { "ingredients": ["..."], "instructions": ["..."] } },
+          "dinner": { "title": "Dinner Name", "imageSearchTerm": "dinner healthy meal", "recipe": { "ingredients": ["..."], "instructions": ["..."] } } 
+        } 
+      },
+      // Repeat for Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+      { "day": "Tuesday", "calories": 2000, "macros": { "p": "150g", "c": "200g", "f": "65g" }, 
+        "meals": { "breakfast": {}, "lunch": {}, "dinner": {} }
+      }
     ],
-    "guidelines": { "hydration": "3L/day", "avoid": ["processed sugar"] }
+    "guidelines": { "hydration": "Recommended water intake.", "avoid": ["bad options"], "supplements": "Safe + optional supplements.", "sleepTips": "Recovery guidelines." }
   }
 }`;
 

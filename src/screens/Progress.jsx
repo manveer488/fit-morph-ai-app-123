@@ -15,7 +15,7 @@ export default function Progress() {
     capturedImage: null
   };
 
-  const weight = user?.profile?.weight || "75.0";
+  const weight = user?.profile?.weight || "--";
 
   return (
     <MobileContainer>
@@ -60,9 +60,6 @@ export default function Progress() {
                     <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">Weight Trend</p>
                     <div className="flex items-end gap-2">
                       <span className="text-3xl font-bold text-white tracking-tighter font-urbanist">{weight.toString().replace(/[^0-9.]/g, '')} <span className="text-lg font-medium text-slate-500">kg</span></span>
-                      <span className="text-[#00d4ff] text-sm font-bold mb-1 flex items-center">
-                        <span className="material-symbols-outlined text-sm">trending_down</span> {(Math.random() * 2 + 1).toFixed(1)}%
-                      </span>
                     </div>
                   </div>
                   <div className="h-40 w-full relative">
@@ -88,9 +85,6 @@ export default function Progress() {
                     <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">Body Fat %</p>
                     <div className="flex items-end gap-2">
                       <span className="text-3xl font-bold text-white tracking-tighter font-urbanist">{bodyScan.bodyFat} <span className="text-lg font-medium text-slate-500">%</span></span>
-                      <span className="text-primary text-sm font-bold mb-1 flex items-center">
-                        <span className="material-symbols-outlined text-sm">trending_down</span> {(Math.random() * 1.5 + 0.3).toFixed(1)}%
-                      </span>
                     </div>
                   </div>
                   <div className="h-40 w-full relative">
@@ -116,9 +110,6 @@ export default function Progress() {
                     <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">Lean Muscle Mass</p>
                     <div className="flex items-end gap-2">
                       <span className="text-3xl font-bold text-white tracking-tighter font-urbanist">{bodyScan.muscleMass} <span className="text-lg font-medium text-slate-500">kg</span></span>
-                      <span className="text-emerald-500 text-sm font-bold mb-1 flex items-center">
-                        <span className="material-symbols-outlined text-sm">trending_up</span> +{(Math.random() * 1.5 + 0.5).toFixed(1)}kg
-                      </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 mt-2">
@@ -176,18 +167,9 @@ export default function Progress() {
           {activeTab === 'Timeline' && (
              <section className="space-y-4">
               <h2 className="text-xl font-bold tracking-tight px-1 font-urbanist">Photo Timeline</h2>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { date: 'May 12', img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=300&q=80' },
-                  { date: 'Apr 28', img: 'https://images.unsplash.com/photo-1571019613914-85f342c6a11e?w=300&q=80' },
-                  { date: 'Apr 05', img: 'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=300&q=80' }
-                ].map((item, i) => (
-                  <div key={i} className="aspect-square rounded-2xl overflow-hidden border border-primary/10 relative shadow-lg group">
-                    <img className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-500" src={item.img} alt={item.date} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <span className="absolute bottom-2 left-3 text-[9px] font-bold text-white uppercase tracking-widest">{item.date}</span>
-                  </div>
-                ))}
+              <div className="text-center py-10 opacity-50 bg-white/5 rounded-2xl border border-white/10">
+                <p className="text-sm font-bold uppercase tracking-widest text-slate-500">No historical data available</p>
+                <p className="text-xs text-slate-600 mt-2">Complete more scans to unlock timeline progress.</p>
               </div>
             </section>
           )}
