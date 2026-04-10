@@ -9,10 +9,10 @@ export default function Progress() {
   const [activeTab, setActiveTab] = useState('Overview');
 
   // Use real data from user profile (updated via scans)
-  const bodyScan = user?.metrics || window.fitmorphData?.bodyScan || {
+  const bodyScan = user?.metrics || {
     bodyFat: "--",
     muscleMass: "--",
-    capturedImage: null
+    lastScanImage: null
   };
 
   const weight = user?.profile?.weight || "--";
@@ -121,12 +121,18 @@ export default function Progress() {
               {/* Before/After Prototype Section */}
               <section className="space-y-4">
                 <h2 className="text-xl font-bold tracking-tight px-1 font-urbanist">Evolution AI Scan</h2>
-                <div className="relative w-full aspect-[4/5] rounded-[2.5rem] overflow-hidden border-2 border-primary/30 group shadow-2xl shadow-primary/20">
-                  <img className="absolute inset-0 w-full h-full object-cover" src={bodyScan.capturedImage || "https://lh3.googleusercontent.com/aida-public/AB6AXuAzunDbipihqsHU5pZKIWoJZ1VztDrkwDK1mP7GPW334RK6bRzCc8Vlw1Qy-WCuouToFmwiMaoKtWHML9YKCZ1ssHDPzjbVtnp7BJKeZfgHHdTzTu0KbfTprp1-zLoSjuqbTh5TSibaclQmikxQcJQxC-hPptzYsJ88v3JTh5Dt-kGTiJ2d8Ve7XAz_MgmoIC2dRFXV3IEK44kDuh95DfljGvKesVcRG4gLQ6ixwVC2F0c47zlZnrt5miBVRWng8ew7C2-Zswc3LLBf"} alt="Current Scan" />
+                <div className="relative w-full aspect-[4/5] rounded-[2.5rem] overflow-hidden border-2 border-primary/30 group shadow-2xl shadow-primary/20 bg-slate-900">
+                  {bodyScan.lastScanImage ? (
+                    <img className="absolute inset-0 w-full h-full object-cover" src={bodyScan.lastScanImage} alt="Current Scan" />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-white opacity-20 text-[10px] uppercase font-bold tracking-widest">Awaiting First Scan</span>
+                    </div>
+                  )}
                   
                   {/* Slider Divider Tool */}
                   <div className="absolute inset-0 w-1/2 overflow-hidden border-r-2 border-[#00d4ff] shadow-[5px_0_15px_rgba(0,212,255,0.5)] z-10">
-                    <img className="absolute inset-0 w-[200%] h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClJpf1q8FQKunie2kv1NVCMLHK0jP0AcUSezaLijLmPZiXELNDMCn9hnlQ75fmG_n-zhQT214J_niv-D-Pv_5vjjdG6yiFPBjCHc3Z-Nr1ZEVHMOVQjLEfOt2DofCLeuMqB8IP482e2tqbzoOiOxfZu7ScHo4N4fvQC9n4F7HSZwkG1-_te3rK4Vkdw_hKu502gou-t9c449Pw1xHkkCdXp98Ii6QM6167N6n-i2btOjftg-iXgFop7eszvFoDe_MbL1cRDMEyGBmO" alt="Initial Scan" />
+                    <img className="absolute inset-0 w-[200%] h-full object-cover opacity-50 grayscale" src="https://images.unsplash.com/photo-1548690312-e3b507d17a12?w=800&q=80" alt="Initial Baseline" />
                     <div className="absolute bottom-6 left-6 bg-black/50 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border border-white/20 text-white">Baseline</div>
                   </div>
                   <div className="absolute bottom-6 right-6 bg-primary/60 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border border-white/20 text-white z-20">Current</div>

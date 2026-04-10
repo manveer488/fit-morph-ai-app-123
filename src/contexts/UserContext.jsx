@@ -6,12 +6,18 @@ export function UserProvider({ children }) {
   const [user, setUser] = useState({
     name: '',
     email: '',
+    password: '', // New field for security
     isLoggedIn: false,
     hasCompletedBodyScan: false,
     lastScanDate: null,
-    metrics: null,
+    metrics: {
+      bodyFat: '---',
+      muscleMass: '---',
+      lastScanImage: null // Store actual uploaded photo base64
+    },
     // Detailed profile for AI
     profile: {
+      fullName: '',
       age: "24",
       gender: "Female",
       height: "172cm",
@@ -26,17 +32,21 @@ export function UserProvider({ children }) {
     language: "English"
   });
 
+  // Helper to check if scan is older than 7 days
+  const isScanStale = () => {
+    if (!user.lastScanDate) return true;
+    const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
+    return (Date.now() - user.lastScanDate) > sevenDaysInMs;
+  };
+
   // Load state from localStorage on mount (mocking persistence)
   useEffect(() => {
     const saved = localStorage.getItem('fitmorph_user');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // Aggressive Migration: Clear any old hardcoded or generic names to ensure accurate personalization
-        const staleNames = ['Sarah', 'Sahra', 'Demo User', 'Warrior', 'Google User', 'Apple User'];
-        if (staleNames.some(n => parsed.name && parsed.name.toLowerCase().includes(n.toLowerCase()))) {
-          parsed.name = '';
-        }
+        // Ensure metrics structure exists
+        if (!parsed.metrics) parsed.metrics = { bodyFat: '---', muscleMass: '---', lastScanImage: null };
         setUser(parsed);
       } catch (e) {
         console.error("Failed to load user state", e);
@@ -54,22 +64,25 @@ export function UserProvider({ children }) {
     ...userData, 
     isLoggedIn: true 
   }));
+
   const logout = () => {
-    setUser({ 
+    const initialState = { 
       name: '', 
       email: '',
+      password: '',
       isLoggedIn: false, 
       hasCompletedBodyScan: false, 
       lastScanDate: null,
-      metrics: null,
+      metrics: { bodyFat: '---', muscleMass: '---', lastScanImage: null },
       profile: {
-        age: "", gender: "", height: "", weight: "", goal: "", 
-        experience: "", dietType: "", medicalConditions: ""
+        fullName: '', age: "24", gender: "Female", height: "172cm", weight: "68kg", 
+        goal: "recomposition", experience: "intermediate", dietType: "mixed", medicalConditions: "none"
       },
       aiPlan: null,
       notificationsEnabled: true,
       language: "English"
-    });
+    };
+    setUser(initialState);
     localStorage.removeItem('fitmorph_user');
   };
   
@@ -82,7 +95,10 @@ export function UserProvider({ children }) {
       ...prev, 
       hasCompletedBodyScan: true, 
       lastScanDate: Date.now(),
-      metrics, 
+      metrics: {
+        ...prev.metrics,
+        ...metrics // includes lastScanImage
+      }, 
       aiPlan: plan 
     }));
   };
@@ -104,7 +120,7 @@ export function UserProvider({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout, completeBodyScan, saveScanResult, updateProfile, setAiPlan, toggleNotifications, setLanguage }}>
+    <UserContext.Provider value={{ user, login, logout, completeBodyScan, saveScanResult, updateProfile, setAiPlan, toggleNotifications, setLanguage, isScanStale }}>
       {children}
     </UserContext.Provider>
   );

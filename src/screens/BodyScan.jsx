@@ -59,15 +59,16 @@ export default function BodyScan() {
       resizedImg.src = resizedForScanBase64;
       await resizedImg.decode();
 
+      // Preliminary Landmark Check (MediaPipe)
       const result = await analyzeBody(resizedImg);
       clearInterval(stepInterval);
       
       if (result.success) {
-        setMetrics(result.metrics);
+        setMetrics(prev => ({ ...prev, ...result.metrics }));
         setScanning(false);
         await runRealAIAnalysis(result, file);
       } else {
-        alert(result.error);
+        alert(result.error || "Please ensure your full body is visible and standing straight.");
         setScanning(false);
       }
     } catch (err) {
@@ -81,19 +82,29 @@ export default function BodyScan() {
   const runRealAIAnalysis = async (scanResult, file) => {
     setGenerating(true);
     try {
-      setAiAnalysisStep("Analyzing body physique...");
+      setAiAnalysisStep("Securing biometric signature...");
       const resizedBase64 = await resizeImage(file, 512);
-      const aiMetrics = await analyzePhysique(scanResult.metrics || scanResult, user.profile, resizedBase64);
       
+      // Perform strict AI validation (Human check, orientation, spoofing)
+      const validationResult = await validateAndAnalyzePhysique(resizedBase64, user.profile, user.metrics?.lastScanImage);
+      
+      if (!validationResult.isValid) {
+        alert(validationResult.userMessage || "Validation failed. Please upload a clear, present photo of your full body.");
+        setGenerating(false);
+        return;
+      }
+
+      const aiMetrics = validationResult.metrics;
       const updatedMetrics = {
         ...(scanResult.metrics || scanResult),
         bodyFat: aiMetrics.predictedBodyFat,
         muscleMass: aiMetrics.predictedMuscleMass,
-        physiqueAssessment: aiMetrics.physiqueAssessment
+        physiqueAssessment: aiMetrics.physiqueAssessment,
+        lastScanImage: resizedBase64 // Store the actual photo for next week's comparison
       };
       setMetrics(updatedMetrics);
       
-      setAiAnalysisStep("Generating 7-day protocols...");
+      setAiAnalysisStep("Synthesizing 7-day protocols...");
       const fullPlan = await generateFullFitnessPlan(aiMetrics, user.profile);
       
       console.log("Full AI Plan Generated:", fullPlan);
@@ -101,8 +112,7 @@ export default function BodyScan() {
       navigate('/dashboard');
     } catch (err) {
       console.error("AI Analysis failed:", err);
-      saveScanResult(scanResult.metrics || scanResult, null);
-      navigate('/dashboard');
+      alert("AI Analysis failed due to network intensity. Please try again in a few moments.");
     } finally {
       setGenerating(false);
     }

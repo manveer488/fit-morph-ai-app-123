@@ -5,9 +5,11 @@ import { useUser } from '../contexts/UserContext.jsx';
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, isScanStale } = useUser();
+  const isLocked = !user.hasCompletedBodyScan || isScanStale();
 
   const handleAction = (path) => {
+    if (isLocked && path !== '/scan') return;
     navigate(path);
   };
 
@@ -36,7 +38,7 @@ export default function Dashboard() {
                 <img 
                   alt="Profile" 
                   className="size-full rounded-full object-cover" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYi1EmfLDml6oywKZoHPCrHaKhmoMX8NXkFSpVE0kP530Fm8N-QfuLg4aUhs3rc4v_WiUohqt9WmUd57IEn-7mKDL_TdhT8be0tiRcAHFstO-wnIhxoBiZMGonNF24ZMlQE2ufcpU4AfcAuQAqAiALSK3ZnTDHOupx6Z6Zkng7snCXvYbZV95PCY8DxKLfSrbCkKeJ4xUUhfkVYiKlMLuIYzVKz0QTCflrOPbmAqB7JpX3CGJJ_1tolMapER9MQOBJKTG8nj77qgAK" 
+                  src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80" 
                 />
               </div>
               <div className="absolute bottom-0 right-0 size-3 bg-accent-aqua rounded-full border-2 border-background-dark"></div>
@@ -51,8 +53,34 @@ export default function Dashboard() {
           </button>
         </header>
 
-        {/* Main Content */}
-        <main className="flex-1 px-6 py-4 space-y-6 overflow-y-auto pb-32">
+        {/* Main Content Area with Lock Logic */}
+        <div className="relative flex-1 flex flex-col overflow-hidden">
+          {isLocked && (
+            <div className="absolute inset-0 z-40 backdrop-blur-md bg-background-dark/60 flex flex-col items-center justify-center p-8 text-center">
+              <div className="size-20 rounded-full bg-primary/20 flex items-center justify-center mb-6 animate-pulse">
+                <span className="material-symbols-outlined text-4xl text-primary">lock</span>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">Protocols Locked</h3>
+              <p className="text-slate-300 text-sm leading-relaxed mb-8">
+                Your 7-day optimized nutrition or workout cycle is being synthesized. <span className="text-primary font-bold">Complete a body scan to unlock.</span>
+              </p>
+              <button 
+                onClick={() => navigate('/scan')}
+                className="w-full max-w-xs bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-2xl shadow-lg shadow-primary/20 flex items-center justify-center gap-3 active:scale-95 transition-all"
+              >
+                <span className="material-symbols-outlined">body_system</span>
+                <span>Complete Body Scan</span>
+              </button>
+              
+              {user.lastScanDate && (
+                <p className="mt-4 text-[10px] uppercase tracking-widest text-slate-500 font-bold">
+                  Last Scan: {new Date(user.lastScanDate).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+          )}
+
+          <main className={`flex-1 px-6 py-4 space-y-6 overflow-y-auto pb-32 ${isLocked ? 'blur-sm grayscale-[0.5] opacity-50' : ''}`}>
           
           {/* Weekly Goal Progress Ring */}
           <section className="relative flex flex-col items-center justify-center py-6 glass-panel rounded-xl overflow-hidden">
@@ -101,7 +129,7 @@ export default function Dashboard() {
             <div className="grid grid-cols-2 gap-4">
               <div onClick={() => navigate('/workout')} className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer shadow-lg active:scale-95 transition-all">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
-                <img alt="Workout" className="size-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANarHOFn0yrV2uyQKavM1kj0dQrfmBbQSaFWXT7miTb9T9jJO_5e34nUEZ5riMwg0aSSYGgBzYzr5eLYukk0oDE4JQcNVIDBNvfi5nhEmgVUx__Lg3SwRm3Lv0fnCvIyL4U4w3kIlunDLL6E7J-L0E6YWVaV8Wq43XtIOPv1pzm2rDhGakZMS3rEUkA-TH6PV0FwLC26gZM7PoMXRr2mWbE6vAed4NyYKaV-Wl_Wq92e8Kh8jOxDDiW6VVIoCjyVusxiQajbutnz7p"/>
+                <img alt="Workout" className="size-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://images.unsplash.com/photo-1541534741688-6078c64b52d2?w=500&q=80"/>
                 <div className="absolute bottom-3 left-3 z-20">
                   <span className="material-symbols-outlined text-accent-aqua mb-1">fitness_center</span>
                   <p className="text-white font-bold text-sm">Start Workout</p>
@@ -109,7 +137,7 @@ export default function Dashboard() {
               </div>
               <div onClick={() => navigate('/scan')} className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer shadow-lg active:scale-95 transition-all">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
-                <img alt="AI Scanner" className="size-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJlBt91T-GSxlZgXhAOlr8X3WLcniEGSy1YGUukTEdYzjOI4s1mHsjEr-3EOqWsC9Y7BtDU8mA1-v3nCfphTSv4TLhB833A0lTQgpo2DZqgOwbZ_ymtceENEMmoB0u8trFE4QjhoydkTmFeZaicrwC-XCokwOF82l5iAR7JZN3dpiUddAGlLhXynhewdkw0MxBEtw0sdHwdZcdrytJctXVxxM_YFdLmX3mYTtL9OldgaVHqOdFgsS5-TKIexvugwwKD13JzknlWA_R"/>
+                <img alt="AI Scanner" className="size-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://images.unsplash.com/photo-1532634922-8fe0b757fb13?w=500&q=80"/>
                 <div className="absolute bottom-3 left-3 z-20">
                    <span className="material-symbols-outlined text-accent-aqua mb-1">body_system</span>
                   <p className="text-white font-bold text-sm">Analyze Body</p>
@@ -117,7 +145,7 @@ export default function Dashboard() {
               </div>
               <div onClick={() => navigate('/diet')} className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer shadow-lg active:scale-95 transition-all">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
-                <img alt="Meal Plan" className="size-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmevuf3TVRAm023uP9c0n8JIhpvMCqUPTRp8LSw63K3FybO_etbcbmbP2wsyVaIvgUgkPyHKuFeVWu2Tv7df9UX0o3pcyMA_qsCIbwJEoEkYlf9u3GUzcj1ot8nspvovgLbrYWs0Fz5Or424quHraMuDUkO4RrEUwspJJIcdWa6yt3yNeEVW7EAzRBn8ORVoQ6aTm3A7PXHQ78rVjYRLwwfF5DjXtJHkEYiwzJ0ojgh5g_onSTErqVhbU0uA3wxfbXtBkKdkt-eHFb"/>
+                <img alt="Meal Plan" className="size-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=500&q=80"/>
                 <div className="absolute bottom-3 left-3 z-20">
                   <span className="material-symbols-outlined text-accent-aqua mb-1">restaurant</span>
                   <p className="text-white font-bold text-sm">Meal Plan</p>
@@ -125,7 +153,7 @@ export default function Dashboard() {
               </div>
               <div onClick={() => navigate('/progress')} className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer shadow-lg active:scale-95 transition-all">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
-                <img alt="Progress" className="size-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACJcVI4SBVUwIn9RezbgqfEOFuil-EYH-ZPC1rfN_0W4DVRaSfuG8QLub535ujVu74W6ojXisUaz30cMc0EmAKB94WdZ-Xxccha742MJUcuD4HHi_bsF8sGP7SoWpPZt-cd0G47WmHHz-uKRx537jgBf8xDfvKlRHFAwBo9QYlCeJVYD8HUHP9dNnP9XY3uLGZJZALQaELdWJAFuHiLK1eFIui_bBELA-YaT0UEZEIu3MECH4UQRqyTNxU_t1CXCmfvgYPUyA_sbZE"/>
+                <img alt="Progress" className="size-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://images.unsplash.com/photo-1594882645126-14020914d58d?w=500&q=80"/>
                 <div className="absolute bottom-3 left-3 z-20">
                   <span className="material-symbols-outlined text-accent-aqua mb-1">query_stats</span>
                   <p className="text-white font-bold text-sm">My Progress</p>

@@ -18,27 +18,44 @@ const isQuotaError = (msg, status) =>
   (msg || "").toLowerCase().includes("busy");
 
 /**
- * PHASE 1: Vision Analysis
+ * PHASE 1: Vision Analysis & Validation
  */
-export async function analyzePhysique(scanData, userProfile, base64Image) {
-  console.log("Phase 1: Real AI Vision Scan started...");
+export async function validateAndAnalyzePhysique(base64Image, userProfile, previousImageBase64 = null) {
+  console.log("Phase 1: Strict AI Vision Validation & Analysis started...");
   
   const prompt = `
-Analyze this user's physique based on the uploaded image and profile:
-- Age: ${userProfile.age}
-- Gender: ${userProfile.gender}
-- Height: ${userProfile.height}
-- Weight: ${userProfile.weight}
+  You are a professional fitness AI specializing in body transformation tracking and anti-fraud detection.
+  
+  ### CONTEXT:
+  Current User Profile: ${JSON.stringify(userProfile)}
+  Previous Image Provided: ${previousImageBase64 ? "YES" : "NO"}
+  
+  ### TASK 1: VALIDATION
+  1. **HUMAN CHECK**: Is this a full-body standing human? If it is just a body part (like an arm/leg) or a non-human object/animal, return Error.
+  2. **ORIENTATION CHECK**: Is the person standing straight?
+  3. **RECURRENCE CHECK**: If a previous image is provided, compare it to the current one.
+     - ERROR if the current image is the **exact same file** as the previous one (user trying to cheat the weekly scan).
+     - ERROR if the current image is of a **different person** (user trying to scan someone else).
+     - SUCCESS only if it is a **new, different photo of the same person**.
 
-TASK: Provide a precise vision-based assessment.
-OUTPUT FORMAT (JSON ONLY):
-{
-  "predictedBodyFat": "Number only",
-  "predictedMuscleMass": "Number only",
-  "physiqueAssessment": "Short professional paragraph (30 words max)."
-}`;
+  ### TASK 2: ANALYSIS (Only if validation succeeds)
+  Provide a precise vision-based assessment of body fat % and muscle mass kg.
 
-  return await callGeminiWithRetry(GEMINI_API_KEY, prompt, base64Image);
+  ### OUTPUT FORMAT (STRICT JSON ONLY):
+  {
+    "isValid": boolean,
+    "errorType": "NONE" | "INVALID_BODY" | "SPOOF_DETECTED" | "DUPLICATE_PHOTO",
+    "userMessage": "NONE" | "Upload your full and straight body image." | "Upload your present image.",
+    "metrics": {
+      "predictedBodyFat": "Number only",
+      "predictedMuscleMass": "Number only",
+      "physiqueAssessment": "Short professional paragraph (30 words max)."
+    }
+  }`;
+
+  // If we have two images, we send both in one request for comparison
+  const images = previousImageBase64 ? [base64Image, previousImageBase64] : [base64Image];
+  return await callGeminiWithRetry(GEMINI_API_KEY, prompt, images);
 }
 
 /**
@@ -177,13 +194,17 @@ async function callGemini(apiKey, prompt, base64Image = null, model = GEMINI_MOD
 
   let body;
   if (base64Image) {
-    // Strip prefix if present
-    const rawBase64 = base64Image.includes('base64,') ? base64Image.split('base64,')[1] : base64Image;
+    const images = Array.isArray(base64Image) ? base64Image : [base64Image];
+    const imageParts = images.map(img => {
+      const raw = img.includes('base64,') ? img.split('base64,')[1] : img;
+      return { inline_data: { mime_type: "image/jpeg", data: raw } };
+    });
+
     body = {
       contents: [{
         parts: [
           { text: prompt },
-          { inline_data: { mime_type: "image/jpeg", data: rawBase64 } }
+          ...imageParts
         ]
       }]
     };

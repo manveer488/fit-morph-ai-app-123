@@ -26,7 +26,7 @@ export default function Welcome() {
             <div className="relative w-full h-full rounded-xl overflow-hidden glass-panel flex items-center justify-center">
               <div 
                 className="w-full h-full bg-center bg-no-repeat bg-cover opacity-90 transition-opacity duration-1000 animate-zoom" 
-                style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDzzQ5ROnWqIFe3a-etVPzxkPoZCoyo1MeGcWzedeH-zFUfRqaxuaQw7BI8wPYxA0RwaqrR7YCZJQaVL6lGGldMlxH1RNorI96EzexSzPDMv17BIsMBQDQEfyXYI6dLO_R3v5p5tXsOngxAGtL9Ydknj0u-5ullmnrkLf1VeTtZtWbpGdocXDms8jZE6S4pAb8HIGn-6Esp1fuJxHVtq-7sIn7aPYpojBgDJkUz_VG6pmSj1fqU1VaPkEMUWBMKCHXfOF7i-jfHQp7C")' }}
+                style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80")' }}
               ></div>
               {/* Overlay Grid for High-Tech feel */}
               <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,242,255,0.1)_1px,transparent_1px)] bg-[length:20px_20px] pointer-events-none"></div>
