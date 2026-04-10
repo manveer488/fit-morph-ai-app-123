@@ -115,21 +115,20 @@ export async function generateTransformationPlan(scanData, userProfile, base64Im
   return await generateFullFitnessPlan(scanData, userProfile);
 }
 
-// Retries callGemini using multiple fallback models on quota/rate-limit/demand errors
+// Retries callGemini using exponential backoff to handle temporary demand spikes
 async function callGeminiWithRetry(apiKey, prompt, base64Image = null) {
-  const modelsToTry = [GEMINI_MODEL, "gemini-1.5-flash", "gemini-1.5-pro", "gemini-1.0-pro"];
-  const RETRY_DELAY_MS = 2000;
+  const MAX_RETRIES = 5;
+  let currentDelay = 4000; // Start with 4 second delay
 
-  for (let attempt = 0; attempt < modelsToTry.length; attempt++) {
-    const currentModel = modelsToTry[attempt];
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      return await callGemini(apiKey, prompt, base64Image, currentModel);
+      return await callGemini(apiKey, prompt, base64Image, GEMINI_MODEL);
     } catch (err) {
       if (!err.isQuota) throw err; // Non-quota errors -> fail immediately
 
-      console.warn(`Model ${currentModel} busy or hit limit. Trying next...`);
+      console.warn(`Model busy or hit limit. Attempt ${attempt}/${MAX_RETRIES}. Retrying in ${currentDelay/1000}s...`);
       
-      const isLastAttempt = attempt === modelsToTry.length - 1;
+      const isLastAttempt = attempt === MAX_RETRIES;
       if (isLastAttempt) {
         // Try backup key before giving up
         if (GEMINI_API_KEY_BACKUP && GEMINI_API_KEY_BACKUP !== apiKey) {
@@ -143,7 +142,8 @@ async function callGeminiWithRetry(apiKey, prompt, base64Image = null) {
         throw new Error("AI servers are experiencing exceptionally high demand. Please try again in 5 minutes.");
       }
 
-      await sleep(RETRY_DELAY_MS);
+      await sleep(currentDelay);
+      currentDelay += 3000; // Increase delay progressively (4s, 7s, 10s, 13s)
     }
   }
 }

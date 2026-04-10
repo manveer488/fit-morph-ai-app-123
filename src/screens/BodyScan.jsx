@@ -207,8 +207,8 @@ export default function BodyScan() {
                 <img src={imagePreview} className="absolute inset-0 w-full h-full object-cover" alt="Body preview" />
               ) : (
                 <div 
-                  className="absolute inset-0 opacity-40 bg-center bg-no-repeat bg-contain" 
-                  style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBniWLhdwIz7nru9svkZEOkkrYQxGLUdsS8-ACEZnc-YNL7_4ZC1F1VbbqdBRRJiQH-CTYI-NlWxhIlxysclTipiBAnB1NfV-oMUuyJS67nFkE_WdKX7Tm4D1dGB1UOThRuYclCqnxCCNJuSTbO3eIExoVKRDfdhc7ZoanxTyVP20V-MEsWZDIyMulTnqk_-yzEbNTAsRNmI7_LU7fwo3FgYLZqa496vugksOk5KavyHM_HACxmNFT0NAHsT0UM9uoW02_akZm9KOO8')" }}
+                  className="absolute inset-0 opacity-40 bg-center bg-no-repeat bg-cover" 
+                  style={{ backgroundImage: "url('https://images.unsplash.com/photo-1549476464-37392f717541?q=80&w=1000&auto=format&fit=crop')" }}
                 />
               )}
 
