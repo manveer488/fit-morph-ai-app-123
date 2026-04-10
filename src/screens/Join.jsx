@@ -80,7 +80,7 @@ export default function Join() {
             <div className="w-full aspect-square rounded-full bg-primary/20 blur-3xl absolute -top-20 -right-20 animate-pulse"></div>
             
             {/* Mock Fitness Silhouette Visualization */}
-            <div className="relative w-full h-80 bg-cover bg-center rounded-xl overflow-hidden shadow-2xl border border-white/5" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBt0cLCTcSxuV1VGXMXcdWVOPPC-1th_otgIO4cWQvxe8klWw9LpklV3CgllZyZytQpr60rjvVFirtZWwskbZmmkTdgCCOCsHa_kMEkKrn5LxBj0f6Vv_swIORpJCgSpa_z3cbeyJETwgZltKSw5RAD6p6R3j9M5znloX68W1GBHIWK4l0DzRvo2CN15L3IPQwVLROMsyfku7W7zPMo1_vFa7pRXPnx7vM1VBVQfI9dePEFtRg_ZOalmNf3qcy9emHaAZJvRIcBR0Yj')" }}>
+            <div className="relative w-full h-80 bg-cover bg-center rounded-xl overflow-hidden shadow-2xl border border-white/5" style={{ backgroundImage: "url('/assets/join_silhouette.png')" }}>
               <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
             </div>
             

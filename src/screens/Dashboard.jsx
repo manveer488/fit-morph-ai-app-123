@@ -27,7 +27,7 @@ export default function Dashboard() {
                 <img 
                   alt="Profile" 
                   className="size-full rounded-full object-cover" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYi1EmfLDml6oywKZoHPCrHaKhmoMX8NXkFSpVE0kP530Fm8N-QfuLg4aUhs3rc4v_WiUohqt9WmUd57IEn-7mKDL_TdhT8be0tiRcAHFstO-wnIhxoBiZMGonNF24ZMlQE2ufcpU4AfcAuQAqAiALSK3ZnTDHOupx6Z6Zkng7snCXvYbZV95PCY8DxKLfSrbCkKeJ4xUUhfkVYiKlMLuIYzVKz0QTCflrOPbmAqB7JpX3CGJJ_1tolMapER9MQOBJKTG8nj77qgAK" 
+                  src="/assets/welcome_hologram.png" 
                 />
               </div>
               <div className="absolute bottom-0 right-0 size-3 bg-accent-aqua rounded-full border-2 border-background-dark shadow-[0_0_10px_rgba(0,242,234,0.5)]"></div>
@@ -91,7 +91,7 @@ export default function Dashboard() {
               {/* Tile 1: Workout */}
               <div onClick={() => navigate('/workout')} className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-xl border border-white/10 transition-transform active:scale-95">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-colors group-hover:from-primary/60"></div>
-                <img alt="Workout" className="size-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANarHOFn0yrV2uyQKavM1kj0dQrfmBbQSaFWXT7miTb9T9jJO_5e34nUEZ5riMwg0aSSYGgBzYzr5eLYukk0oDE4JQcNVIDBNvfi5nhEmgVUx__Lg3SwRm3Lv0fnCvIyL4U4w3kIlunDLL6E7J-L0E6YWVaV8Wq43XtIOPv1pzm2rDhGakZMS3rEUkA-TH6PV0FwLC26gZM7PoMXRr2mWbE6vAed4NyYKaV-Wl_Wq92e8Kh8jOxDDiW6VVIoCjyVusxiQajbutnz7p" />
+                <img alt="Workout" className="size-full object-cover transition-transform duration-700 group-hover:scale-110" src="/assets/join_silhouette.png" />
                 <div className="absolute bottom-3 left-3 z-20 flex flex-col gap-1 transition-transform group-hover:-translate-y-1">
                   <span className="material-symbols-outlined text-[#00f2ff] text-2xl">fitness_center</span>
                   <p className="text-white font-bold text-sm uppercase tracking-wider font-urbanist">Start Workout</p>
@@ -101,7 +101,7 @@ export default function Dashboard() {
               {/* Tile 2: Body Scan */}
               <div onClick={() => navigate('/scan')} className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-xl border border-white/10 transition-transform active:scale-95">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-colors group-hover:from-primary/60"></div>
-                <img alt="AI Scanner" className="size-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJlBt91T-GSxlZgXhAOlr8X3WLcniEGSy1YGUukTEdYzjOI4s1mHsjEr-3EOqWsC9Y7BtDU8mA1-v3nCfphTSv4TLhB833A0lTQgpo2DZqgOwbZ_ymtceENEMmoB0u8trFE4QjhoydkTmFeZaicrwC-XCokwOF82l5iAR7JZN3dpiUddAGlLhXynhewdkw0MxBEtw0sdHwdZcdrytJctXVxxM_YFdLmX3mYTtL9OldgaVHqOdFgsS5-TKIexvugwwKD13JzknlWA_R" />
+                <img alt="AI Scanner" className="size-full object-cover transition-transform duration-700 group-hover:scale-110" src="/assets/body_scan_bg.png" />
                 <div className="absolute top-3 right-3 z-20">
                   {(() => {
                     const isExpired = user.lastScanDate && (Date.now() - user.lastScanDate > 7 * 24 * 60 * 60 * 1000);
@@ -121,7 +121,7 @@ export default function Dashboard() {
               {/* Tile 3: Meal Plan */}
               <div onClick={() => navigate('/diet')} className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-xl border border-white/10 transition-transform active:scale-95">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-colors group-hover:from-primary/60"></div>
-                <img alt="Meal Plan" className="size-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmevuf3TVRAm023uP9c0n8JIhpvMCqUPTRp8LSw63K3FybO_etbcbmbP2wsyVaIvgUgkPyHKuFeVWu2Tv7df9UX0o3pcyMA_qsCIbwJEoEkYlf9u3GUzcj1ot8nspvovgLbrYWs0Fz5Or424quHraMuDUkO4RrEUwspJJIcdWa6yt3yNeEVW7EAzRBn8ORVoQ6aTm3A7PXHQ78rVjYRLwwfF5DjXtJHkEYiwzJ0ojgh5g_onSTErqVhbU0uA3wxfbXtBkKdkt-eHFb" />
+                <img alt="Meal Plan" className="size-full object-cover transition-transform duration-700 group-hover:scale-110" src="/assets/welcome_hologram.png" />
                 <div className="absolute bottom-3 left-3 z-20 flex flex-col gap-1 transition-transform group-hover:-translate-y-1">
                   <span className="material-symbols-outlined text-[#00f2ff] text-2xl">restaurant</span>
                   <p className="text-white font-bold text-sm uppercase tracking-wider font-urbanist">Meal Plan</p>
@@ -131,7 +131,7 @@ export default function Dashboard() {
               {/* Tile 4: My Progress */}
               <div onClick={() => navigate('/progress')} className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-xl border border-white/10 transition-transform active:scale-95">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-colors group-hover:from-primary/60"></div>
-                <img alt="Progress" className="size-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACJcVI4SBVUwIn9RezbgqfEOFuil-EYH-ZPC1rfN_0W4DVRaSfuG8QLub535ujVu74W6ojXisUaz30cMc0EmAKB94WdZ-Xxccha742MJUcuD4HHi_bsF8sGP7SoWpPZt-cd0G47WmHHz-uKRx537jgBf8xDfvKlRHFAwBo9QYlCeJVYD8HUHP9dNnP9XY3uLGZJZALQaELdWJAFuHiLK1eFIui_bBELA-YaT0UEZEIu3MECH4UQRqyTNxU_t1CXCmfvgYPUyA_sbZE" />
+                <img alt="Progress" className="size-full object-cover transition-transform duration-700 group-hover:scale-110" src="/assets/body_scan_bg.png" />
                 <div className="absolute bottom-3 left-3 z-20 flex flex-col gap-1 transition-transform group-hover:-translate-y-1">
                   <span className="material-symbols-outlined text-[#00f2ff] text-2xl">query_stats</span>
                   <p className="text-white font-bold text-sm uppercase tracking-wider font-urbanist">My Progress</p>
