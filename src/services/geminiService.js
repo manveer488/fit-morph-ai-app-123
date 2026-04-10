@@ -57,50 +57,43 @@ Generate a highly personalized Workout Plan + Diet Plan based only on the data I
 - Weight: ${userProfile.weight}
 - Muscle Mass: ${aiMetrics.predictedMuscleMass} kg
 - Body Fat: ${aiMetrics.predictedBodyFat} %
-- Fitness Goal: ${userProfile.goal} (examples: fat loss, muscle gain, recomposition)
-- Activity Level: ${userProfile.activityLevel || 'active'}
+- Fitness Goal: ${userProfile.goal} (e.g., muscle gain, fat loss)
 
-### OUTPUT FORMAT (JSON ONLY, NO MARKDOWN, NO \`\`\`json FORMATTING):
+### COMPLIANCE RULES:
+1. YOU MUST GENERATE A FULL 7-DAY PLAN FOR BOTH WORKOUTS AND NUTRITION.
+2. DO NOT SKIP ANY DAYS. Do not say "Repeat for Tuesday".
+3. OUTPUT FORMAT MUST BE JSON ONLY. NO MARKDOWN.
+
+### OUTPUT SCHEMA:
 {
-  "strategy": "Current body condition, metabolic status, and main areas to improve.",
-  "summary": { "targetBodyFat": "X%", "expectedWeeklyProgress": "X", "roadmap30Day": "Brief roadmap" },
+  "strategy": "Detailed strategy based on metrics",
+  "summary": { "targetBodyFat": "X%", "expectedWeeklyProgress": "+/- X kg", "roadmap30Day": "Brief roadmap" },
   "workoutPlan": [
-    // Provide a precise 7-Day Workout Plan
-    { "day": "Monday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
-    { "day": "Tuesday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
-    { "day": "Wednesday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
-    { "day": "Thursday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
-    { "day": "Friday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
-    { "day": "Saturday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] },
-    { "day": "Sunday", "focus": "Main goal", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] }
-  ],
-  "muscleFocusPlan": [
-    // Provide deep breakdown on muscle engagement
-    { "day": "Monday", "focus": "X", "exercises": [{ "name": "exercise name", "sets": "3", "reps": "10", "formTips": "Target muscle groups and optional home-friendly alternative." }] }
-  ],
-  "recoveryPlan": [
-    // Muscle Recovery Plan (24-Hour Recovery Steps, 72-Hour Plan, Sleep Tips, Nutrition for Faster Recovery, Safe Optional Supplements)
-    { "day": "Tuesday", "focus": "Recovery", "exercises": [{ "name": "Foam rolling", "sets": "1", "reps": "10min", "formTips": "Hydration and sleep tips" }] },
-    { "day": "Sunday", "focus": "Rest", "exercises": [{ "name": "Stretching", "sets": "1", "reps": "15min", "formTips": "Mobility work" }]}
+    // Array of EXACTLY 7 objects for Mon, Tue, Wed, Thu, Fri, Sat, Sun
+    { "day": "Monday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
+    { "day": "Tuesday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
+    { "day": "Wednesday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
+    { "day": "Thursday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
+    { "day": "Friday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
+    { "day": "Saturday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
+    { "day": "Sunday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] }
   ],
   "mealPlan": {
     "days": [
-      // Full 7-Day Personalized Diet Plan
-      { "day": "Monday", "calories": 2000, "macros": { "p": "150g", "c": "200g", "f": "65g" }, 
-        "meals": { 
-          "breakfast": { "title": "Breakfast Name", "imageSearchTerm": "breakfast food photography", "recipe": { "ingredients": ["Quick cooking / Indian food alternative ingredients..."], "instructions": ["Calories + macros..."] } }, 
-          "snack1": { "title": "Snack", "imageSearchTerm": "healthy snack", "recipe": { "ingredients": ["..."], "instructions": ["..."] } },
-          "lunch": { "title": "Lunch Name", "imageSearchTerm": "lunch healthy meal", "recipe": { "ingredients": ["..."], "instructions": ["..."] } }, 
-          "snack2": { "title": "Snack", "imageSearchTerm": "healthy snack", "recipe": { "ingredients": ["..."], "instructions": ["..."] } },
-          "dinner": { "title": "Dinner Name", "imageSearchTerm": "dinner healthy meal", "recipe": { "ingredients": ["..."], "instructions": ["..."] } } 
-        } 
+      // Array of EXACTLY 7 objects for Mon, Tue, Wed, Thu, Fri, Sat, Sun
+      { 
+        "day": "Monday", "calories": 2000, "macros": {"p": "150g", "c": "200g", "f": "60g"},
+        "meals": {
+          "breakfast": {"title": "X", "imageSearchTerm": "X", "recipe": {"ingredients": ["X"], "instructions": ["X"]}},
+          "lunch": {"title": "X", "imageSearchTerm": "X", "recipe": {"ingredients": ["X"], "instructions": ["X"]}},
+          "snack": {"title": "X", "imageSearchTerm": "X", "recipe": {"ingredients": ["X"], "instructions": ["X"]}},
+          "dinner": {"title": "X", "imageSearchTerm": "X", "recipe": {"ingredients": ["X"], "instructions": ["X"]}}
+        }
       },
-      // Repeat for Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
-      { "day": "Tuesday", "calories": 2000, "macros": { "p": "150g", "c": "200g", "f": "65g" }, 
-        "meals": { "breakfast": {}, "lunch": {}, "dinner": {} }
-      }
+      // ... Repeat for all other 6 days ...
+      { "day": "Sunday", "calories": 2000, "macros": {"p": "150g", "c": "200g", "f": "60g"}, "meals": { "breakfast": {}, "lunch": {}, "snack": {}, "dinner": {} } }
     ],
-    "guidelines": { "hydration": "Recommended water intake.", "avoid": ["bad options"], "supplements": "Safe + optional supplements.", "sleepTips": "Recovery guidelines." }
+    "guidelines": { "hydration": "X", "avoid": ["X"], "supplements": "X" }
   }
 }`;
 

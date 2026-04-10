@@ -29,6 +29,16 @@
   }
 }
 
+@keyframes gentle-zoom {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.animate-zoom {
+  animation: gentle-zoom 10s ease-in-out infinite;
+}
+
 body {
   @apply bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display;
 }

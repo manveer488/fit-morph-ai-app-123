@@ -10,13 +10,13 @@ export default function Join() {
     e.preventDefault();
     if (email) {
       localStorage.setItem('userEmail', email);
-      navigate('/dashboard');
+      navigate('/scan');
     }
   };
 
   return (
     <MobileContainer>
-      <div className="relative flex flex-col h-full w-full bg-background-light dark:bg-background-dark overflow-hidden font-display text-slate-900 dark:text-slate-100 antialiased italic-none">
+      <div className="relative flex flex-col h-full w-full bg-background-light dark:bg-background-dark overflow-hidden font-display text-slate-900 dark:text-slate-100 antialiased">
         {/* Header / Top Bar */}
         <div className="flex items-center p-6 justify-between z-10 shrink-0">
           <button 
@@ -31,33 +31,36 @@ export default function Join() {
 
         {/* Content Area */}
         <div className="relative flex-1 px-6 flex flex-col justify-center">
+          {/* Background Glow */}
           <div className="absolute inset-0 bg-gradient-to-b from-primary/30 via-transparent to-background-dark/90 z-0"></div>
           
           <div className="relative z-10">
+            {/* Pulsing Light Effect */}
             <div className="w-full aspect-square rounded-full bg-primary/20 blur-3xl absolute -top-20 -right-20 animate-pulse"></div>
             
-            {/* Silhouette Asset */}
+            {/* Silhouette Hero Image */}
             <div 
-              className="relative w-full h-80 bg-cover bg-center rounded-xl overflow-hidden shadow-2xl border border-white/5" 
+              className="relative w-full h-80 bg-cover bg-center rounded-xl overflow-hidden shadow-2xl border border-white/5 animate-zoom" 
               style={{ backgroundImage: "url('/assets/remaining_assets.png')", backgroundPosition: 'left top', backgroundSize: '200%' }}
             >
+              {/* Bottom Gradient Overlay for Silhouette */}
               <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
             </div>
 
             <div className="mt-8">
-              <h1 className="text-slate-100 tracking-tight text-4xl font-extrabold leading-tight text-left font-urbanist italic-none">
+              <h1 className="text-slate-100 tracking-tight text-4xl font-extrabold leading-tight text-left font-urbanist">
                 Join FitMorph AI
               </h1>
-              <p className="text-slate-400 text-lg font-normal leading-relaxed mt-3 text-left italic-none">
+              <p className="text-slate-400 text-lg font-normal leading-relaxed mt-3 text-left">
                 Experience the future of fitness with AI-driven transformation and precision tracking.
               </p>
             </div>
 
             {/* Registration Form */}
             <form onSubmit={handleJoin} className="mt-8 space-y-4">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <span className="material-symbols-outlined text-slate-500 text-xl">mail</span>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-primary transition-colors">
+                  <span className="material-symbols-outlined text-xl">mail</span>
                 </div>
                 <input 
                   type="email" 
@@ -84,6 +87,9 @@ export default function Join() {
             </div>
           </div>
         </div>
+
+        {/* Home Indicator Spacer (iOS Style) */}
+        <div className="h-4 w-full shrink-0"></div>
       </div>
     </MobileContainer>
   );

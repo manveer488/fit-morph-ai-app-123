@@ -25,7 +25,7 @@ export default function Welcome() {
             <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full"></div>
             <div className="relative w-full h-full rounded-xl overflow-hidden glass-panel flex items-center justify-center">
               <div 
-                className="w-full h-full bg-center bg-no-repeat bg-cover opacity-90 transition-opacity duration-1000" 
+                className="w-full h-full bg-center bg-no-repeat bg-cover opacity-90 transition-opacity duration-1000 animate-zoom" 
                 style={{ backgroundImage: 'url("/assets/welcome_hologram.png")' }}
               ></div>
               {/* Overlay Grid for High-Tech feel */}
