@@ -47,53 +47,72 @@ OUTPUT FORMAT (JSON ONLY):
 export async function generateFullFitnessPlan(aiMetrics, userProfile) {
   console.log("Phase 2: Generating Expertise-Driven Transformation Protocols...");
   
-  const prompt = `You are an expert fitness coach, nutritionist, and body-transformation specialist.
-Generate a highly personalized Workout Plan + Diet Plan based only on the data I provide.
+  const prompt = `You are an expert fitness coach, certified nutritionist, and sports recovery specialist.
+I provide you with my biometric details. Using this data, generate a complete structured plan including:
 
-### USER INPUT:
-- Age: ${userProfile.age}
-- Gender: ${userProfile.gender}
-- Height: ${userProfile.height}
-- Weight: ${userProfile.weight}
+1. Personalized Workout Plan
+- Weekly schedule (7 days)
+- Exercise names + sets + reps
+- Separate strength, cardio, and mobility sessions
+- Progressive overload week by week
+- Notes for form, safety, and warm-ups
+
+2. Personalized Diet Plan
+- Daily calorie target
+- Macro breakdown (protein, carbs, fats)
+- Full meal plan (breakfast, lunch, dinner, snacks)
+- Hydration goals
+- Foods to include and avoid
+
+3. Muscle Recovery Plan
+- Post-workout recovery routine
+- Sleep optimization
+- Stretching + mobility routine
+- Supplements (optional)
+- Rest day guidelines
+
+### USER BIOMETRICS:
 - Muscle Mass: ${aiMetrics.predictedMuscleMass} kg
 - Body Fat: ${aiMetrics.predictedBodyFat} %
-- Fitness Goal: ${userProfile.goal} (e.g., muscle gain, fat loss)
+- Weight: ${userProfile.weight}
+- Height: ${userProfile.height}
+- Age: ${userProfile.age}
+- Fitness Goal: ${userProfile.goal}
 
-### COMPLIANCE RULES:
-1. YOU MUST GENERATE A FULL 7-DAY PLAN FOR BOTH WORKOUTS AND NUTRITION.
-2. DO NOT SKIP ANY DAYS. Do not say "Repeat for Tuesday".
-3. OUTPUT FORMAT MUST BE JSON ONLY. NO MARKDOWN.
+### OUTPUT REQUIREMENTS:
+Return the plan as a PURE JSON object (NO MARKDOWN).
 
-### OUTPUT SCHEMA:
+### JSON SCHEMA:
 {
+  "summary": "Short summary for quick reference (50 words max)",
   "strategy": "Detailed strategy based on metrics",
-  "summary": { "targetBodyFat": "X%", "expectedWeeklyProgress": "+/- X kg", "roadmap30Day": "Brief roadmap" },
   "workoutPlan": [
-    // Array of EXACTLY 7 objects for Mon, Tue, Wed, Thu, Fri, Sat, Sun
-    { "day": "Monday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
-    { "day": "Tuesday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
-    { "day": "Wednesday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
-    { "day": "Thursday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
-    { "day": "Friday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
-    { "day": "Saturday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] },
-    { "day": "Sunday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] }
+    // EXACTLY 7 days
+    { "day": "Monday", "focus": "X", "exercises": [{"name": "X", "sets": "X", "reps": "X", "formTips": "X"}] }
   ],
+  "recoveryPlan": {
+    "postWorkout": "X",
+    "sleepOptimization": "X",
+    "stretchingRoutine": "X",
+    "supplements": "X",
+    "restGuidelines": "X"
+  },
   "mealPlan": {
+    "dailyCalories": 2000,
+    "macros": {"p": "150g", "c": "200g", "f": "60g"},
     "days": [
-      // Array of EXACTLY 7 objects for Mon, Tue, Wed, Thu, Fri, Sat, Sun
+      // EXACTLY 7 days
       { 
-        "day": "Monday", "calories": 2000, "macros": {"p": "150g", "c": "200g", "f": "60g"},
+        "day": "Monday", 
         "meals": {
           "breakfast": {"title": "X", "imageSearchTerm": "X", "recipe": {"ingredients": ["X"], "instructions": ["X"]}},
           "lunch": {"title": "X", "imageSearchTerm": "X", "recipe": {"ingredients": ["X"], "instructions": ["X"]}},
           "snack": {"title": "X", "imageSearchTerm": "X", "recipe": {"ingredients": ["X"], "instructions": ["X"]}},
           "dinner": {"title": "X", "imageSearchTerm": "X", "recipe": {"ingredients": ["X"], "instructions": ["X"]}}
         }
-      },
-      // ... Repeat for all other 6 days ...
-      { "day": "Sunday", "calories": 2000, "macros": {"p": "150g", "c": "200g", "f": "60g"}, "meals": { "breakfast": {}, "lunch": {}, "snack": {}, "dinner": {} } }
+      }
     ],
-    "guidelines": { "hydration": "X", "avoid": ["X"], "supplements": "X" }
+    "guidelines": { "hydration": "X", "foodsToInclude": ["X"], "foodsToAvoid": ["X"] }
   }
 }`;
 
@@ -211,10 +230,9 @@ async function callGemini(apiKey, prompt, base64Image = null, model = GEMINI_MOD
         physiqueAssessment: parsedData.physiqueAssessment || parsedData.assessment
       },
       strategy: parsedData.strategy || "Maintain consistency.",
-      summary: parsedData.summary || {},
+      summary: parsedData.summary || "Transformation roadmap synchronized.",
       workoutPlan: parsedData.workoutPlan || parsedData.workout || [],
-      muscleFocusPlan: parsedData.muscleFocusPlan || [],
-      recoveryPlan: parsedData.recoveryPlan || [],
+      recoveryPlan: parsedData.recoveryPlan || {},
       mealPlan: parsedData.mealPlan || parsedData.dietPlan || parsedData.diet || { days: [], guidelines: {} }
     };
 

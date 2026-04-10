@@ -11,6 +11,8 @@ export default function DietPlan() {
   // Normalize meal plan data from AI response
   const mealPlanData = user.aiPlan?.mealPlan;
   const days = mealPlanData?.days || [];
+  const dailyCalories = mealPlanData?.dailyCalories || 2000;
+  const dailyMacros = mealPlanData?.macros || { p: "---", c: "---", f: "---" };
   const isPlanAvailable = days.length > 0;
 
   if (!isPlanAvailable) {
@@ -73,21 +75,21 @@ export default function DietPlan() {
           <section className="grid grid-cols-3 gap-4">
             <div className="bg-white/5 p-4 rounded-2xl border border-white/5 text-center">
               <p className="text-[8px] font-black uppercase text-slate-500 mb-1">Protein</p>
-              <p className="text-lg font-bold text-primary font-urbanist">{currentDayData.macros?.p}</p>
+              <p className="text-lg font-bold text-primary font-urbanist">{dailyMacros.p}</p>
             </div>
             <div className="bg-white/5 p-4 rounded-2xl border border-white/5 text-center">
               <p className="text-[8px] font-black uppercase text-slate-500 mb-1">Carbs</p>
-              <p className="text-lg font-bold text-accent-aqua font-urbanist">{currentDayData.macros?.c}</p>
+              <p className="text-lg font-bold text-accent-aqua font-urbanist">{dailyMacros.c}</p>
             </div>
             <div className="bg-white/5 p-4 rounded-2xl border border-white/5 text-center">
               <p className="text-[8px] font-black uppercase text-slate-500 mb-1">Fat</p>
-              <p className="text-lg font-bold text-accent-pink font-urbanist">{currentDayData.macros?.f}</p>
+              <p className="text-lg font-bold text-accent-pink font-urbanist">{dailyMacros.f}</p>
             </div>
           </section>
 
           {/* Meals */}
           <section className="space-y-6">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Target Intake: {currentDayData.calories} Kcal</h3>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Target Intake: {dailyCalories} Kcal</h3>
             
             {Object.entries(currentDayData.meals || {}).map(([type, meal]) => (
               meal?.title && (
@@ -127,15 +129,29 @@ export default function DietPlan() {
              <ul className="space-y-3">
                 <li className="flex items-center gap-3 text-sm font-medium text-slate-400">
                    <span className="size-1.5 rounded-full bg-accent-aqua"></span>
-                   Hydration: {guidelines.hydration}
+                   Hydration Goals: {mealPlanData.guidelines?.hydration || "2-3 L Daily"}
                 </li>
-                <li className="flex items-center gap-3 text-sm font-medium text-slate-400">
-                   <span className="size-1.5 rounded-full bg-accent-pink"></span>
-                   Avoid: {guidelines.avoid?.[0] || "Processed foods"}
+                <li className="flex flex-col gap-2">
+                   <div className="flex items-center gap-3 text-sm font-medium text-accent-pink">
+                      <span className="size-1.5 rounded-full bg-accent-pink"></span>
+                      Foods to Avoid:
+                   </div>
+                   <div className="flex flex-wrap gap-2 pl-4">
+                      {(mealPlanData.guidelines?.foodsToAvoid || []).map((food, i) => (
+                        <span key={i} className="text-[10px] font-bold px-2 py-1 bg-accent-pink/5 rounded-lg text-accent-pink border border-accent-pink/10">{food}</span>
+                      ))}
+                   </div>
                 </li>
-                <li className="flex items-center gap-3 text-sm font-medium text-slate-400">
-                   <span className="size-1.5 rounded-full bg-primary"></span>
-                   Supplements: {guidelines.supplements}
+                <li className="flex flex-col gap-2">
+                   <div className="flex items-center gap-3 text-sm font-medium text-[#00f2ff]">
+                      <span className="size-1.5 rounded-full bg-[#00f2ff]"></span>
+                      Optimal Choices:
+                   </div>
+                   <div className="flex flex-wrap gap-2 pl-4">
+                      {(mealPlanData.guidelines?.foodsToInclude || []).map((food, i) => (
+                        <span key={i} className="text-[10px] font-bold px-2 py-1 bg-[#00f2ff]/5 rounded-lg text-[#00f2ff] border border-[#00f2ff]/10">{food}</span>
+                      ))}
+                   </div>
                 </li>
              </ul>
           </section>

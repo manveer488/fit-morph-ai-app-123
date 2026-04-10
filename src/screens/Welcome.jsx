@@ -7,7 +7,7 @@ export default function Welcome() {
 
   return (
     <MobileContainer>
-      <div className="relative flex flex-col h-full w-full bg-background-light dark:bg-background-dark overflow-hidden font-display text-slate-900 dark:text-slate-100 antialiased">
+      <div className="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-hidden max-w-[430px] mx-auto italic-none">
         {/* Status Bar Spacer (iOS Style) */}
         <div className="h-12 w-full shrink-0"></div>
 
@@ -26,7 +26,7 @@ export default function Welcome() {
             <div className="relative w-full h-full rounded-xl overflow-hidden glass-panel flex items-center justify-center">
               <div 
                 className="w-full h-full bg-center bg-no-repeat bg-cover opacity-90 transition-opacity duration-1000 animate-zoom" 
-                style={{ backgroundImage: 'url("/assets/welcome_hologram.png")' }}
+                style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDzzQ5ROnWqIFe3a-etVPzxkPoZCoyo1MeGcWzedeH-zFUfRqaxuaQw7BI8wPYxA0RwaqrR7YCZJQaVL6lGGldMlxH1RNorI96EzexSzPDMv17BIsMBQDQEfyXYI6dLO_R3v5p5tXsOngxAGtL9Ydknj0u-5ullmnrkLf1VeTtZtWbpGdocXDms8jZE6S4pAb8HIGn-6Esp1fuJxHVtq-7sIn7aPYpojBgDJkUz_VG6pmSj1fqU1VaPkEMUWBMKCHXfOF7i-jfHQp7C")' }}
               ></div>
               {/* Overlay Grid for High-Tech feel */}
               <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,242,255,0.1)_1px,transparent_1px)] bg-[length:20px_20px] pointer-events-none"></div>
@@ -52,7 +52,7 @@ export default function Welcome() {
         </div>
 
         {/* Footer / Action Area */}
-        <div className="p-8 space-y-4 shrink-0">
+        <div className="p-8 space-y-4 shrink-0 pb-12">
           <button 
             onClick={() => navigate('/benefits')}
             className="w-full py-4 px-6 rounded-full bg-neon-blue text-slate-950 font-bold text-lg neon-glow transition-transform active:scale-95 flex items-center justify-center gap-2"

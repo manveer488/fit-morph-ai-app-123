@@ -12,16 +12,7 @@ export default function WorkoutPlan() {
   const [selectedDay, setSelectedDay] = useState(0);
 
   // Robust normalization of workout data
-  const getPlanData = (tab) => {
-    let source;
-    if (tab === "Recovery") source = user.aiPlan?.recoveryPlan;
-    else source = user.aiPlan?.workoutPlan;
-
-    if (Array.isArray(source)) return source;
-    return null;
-  };
-
-  const currentPlan = getPlanData(activeTab);
+  const currentPlan = user.aiPlan?.workoutPlan || [];
   const isPlanAvailable = Array.isArray(currentPlan) && currentPlan.length > 0;
 
   if (!isPlanAvailable && !loading) {
@@ -75,7 +66,7 @@ export default function WorkoutPlan() {
               </button>
             ))}
           </div>
-
+          {/* AI Generated Exercises */}
           <section className="space-y-4">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-xl font-bold tracking-tight font-urbanist">7-Day Protocol</h2>
@@ -98,11 +89,6 @@ export default function WorkoutPlan() {
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest leading-none">{currentDayPlan.focus || "Daily Focus"}</h3>
-                <div className="flex items-center gap-2">
-                  <span className="flex items-center gap-1 text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full uppercase">
-                    7-Day Mode
-                  </span>
-                </div>
               </div>
 
               {currentDayPlan.exercises && currentDayPlan.exercises.map((ex, idx) => (
@@ -121,6 +107,48 @@ export default function WorkoutPlan() {
               ))}
             </div>
           </section>
+
+          {/* Muscle Recovery Plan Section */}
+          {user.aiPlan?.recoveryPlan && (
+            <section className="mt-12 p-6 rounded-3xl bg-slate-100 dark:bg-primary/10 border border-slate-200 dark:border-primary/20 space-y-6">
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-primary text-3xl">rebase_edit</span>
+                <div>
+                  <h2 className="text-xl font-bold font-urbanist leading-none">Muscle Recovery</h2>
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Bio-Regeneration Protocol</p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-sm">healing</span> Post-Workout
+                  </h4>
+                  <p className="text-sm text-slate-400 leading-relaxed">{user.aiPlan.recoveryPlan.postWorkout}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="text-xs font-bold text-accent-aqua uppercase tracking-widest mb-1 flex items-center gap-2">
+                      <span className="material-symbols-outlined text-sm">bedtime</span> Sleep
+                    </h4>
+                    <p className="text-[11px] text-slate-400 leading-tight">{user.aiPlan.recoveryPlan.sleepOptimization}</p>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-accent-pink uppercase tracking-widest mb-1 flex items-center gap-2">
+                      <span className="material-symbols-outlined text-sm">self_improvement</span> Mobility
+                    </h4>
+                    <p className="text-[11px] text-slate-400 leading-tight">{user.aiPlan.recoveryPlan.stretchingRoutine}</p>
+                  </div>
+                </div>
+                <div>
+                   <h4 className="text-xs font-bold text-slate-200 uppercase tracking-widest mb-2 flex items-center gap-2">
+                     <span className="material-symbols-outlined text-sm">pill</span> Optional Supplements
+                   </h4>
+                   <p className="text-sm text-slate-400 leading-relaxed">{user.aiPlan.recoveryPlan.supplements}</p>
+                </div>
+              </div>
+            </section>
+          )}
         </main>
 
         {/* Exercise Modal */}
