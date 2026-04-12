@@ -35,7 +35,23 @@ export default function DietPlan() {
   const currentDayData = days[selectedDay] || days[0];
   const guidelines = mealPlanData?.guidelines || { hydration: "2-3L Water", avoid: ["Processed Sugar"], supplements: "Consult professional" };
 
-  const getImage = (term) => `https://source.unsplash.com/featured/800x600/?${encodeURIComponent(term || "healthy meal")},food`;
+  const premiumFoodImages = [
+    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80",
+    "https://images.unsplash.com/photo-1463183547458-6a2c760d0912?w=800&q=80",
+    "https://images.unsplash.com/photo-1494597564530-871f2b93ac55?w=800&q=80",
+    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80",
+    "https://images.unsplash.com/photo-1484723091791-c0e7e1471d69?w=800&q=80",
+    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80"
+  ];
+
+  const getImage = (term) => {
+    let hash = 0;
+    const text = term || "meal";
+    for (let i = 0; i < text.length; i++) {
+        hash = text.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return premiumFoodImages[Math.abs(hash) % premiumFoodImages.length];
+  };
 
   return (
     <MobileContainer>

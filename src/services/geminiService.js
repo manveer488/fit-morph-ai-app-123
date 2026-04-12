@@ -1,7 +1,7 @@
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_API_KEY_BACKUP = import.meta.env.VITE_GEMINI_API_KEY_BACKUP;
-const GEMINI_MODEL = "gemini-1.5-flash";
-const GEMINI_FALLBACK_MODEL = "gemini-1.5-flash-8b";
+const GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_FALLBACK_MODEL = "gemini-2.5-flash";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const isQuotaError = (msg, status) =>
@@ -149,12 +149,12 @@ export async function generateTransformationPlan(scanData, userProfile, base64Im
 
 // Retries callGemini using exponential backoff to handle temporary demand spikes
 async function callGeminiWithRetry(apiKey, prompt, base64Image = null) {
-  const MAX_RETRIES = 5;
-  let currentDelay = 4000; 
+  const MAX_RETRIES = 2; // Reduced from 5 to prevent long hang on quota limits
+  let currentDelay = 1000; 
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    // Try primary model twice, then switch to fallback 8b model
-    const useModel = attempt > 2 ? GEMINI_FALLBACK_MODEL : GEMINI_MODEL;
+    // Try primary model twice, then switch to fallback
+    const useModel = attempt > 1 ? GEMINI_FALLBACK_MODEL : GEMINI_MODEL;
     
     try {
       return await callGemini(apiKey, prompt, base64Image, useModel);
@@ -173,11 +173,11 @@ async function callGeminiWithRetry(apiKey, prompt, base64Image = null) {
             throw backupErr;
           }
         }
-        throw new Error("AI servers are experiencing exceptionally high demand. Our systems are overloaded. Please try again in 5-10 minutes.");
+        throw new Error("AI servers are experiencing exceptionally high demand. Our systems are overloaded.");
       }
 
       await sleep(currentDelay);
-      currentDelay += 3000;
+      currentDelay += 1000;
     }
   }
 }

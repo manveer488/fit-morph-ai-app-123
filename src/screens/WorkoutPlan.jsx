@@ -32,9 +32,22 @@ export default function WorkoutPlan() {
     );
   }
 
+  const premiumWorkoutImages = [
+    "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600&q=80",
+    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80",
+    "https://images.unsplash.com/photo-1541534741688-6078c64b52d2?w=600&q=80",
+    "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80",
+    "https://images.unsplash.com/photo-1526506114875-9262146f8c27?w=600&q=80",
+    "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80"
+  ];
+
   const getImage = (term, name) => {
-    const search = term || name || "fitness workout";
-    return `https://source.unsplash.com/featured/800x600/?${encodeURIComponent(search)},fitness,workout`;
+    const text = term || name || "workout";
+    let hash = 0;
+    for (let i = 0; i < text.length; i++) {
+      hash = text.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return premiumWorkoutImages[Math.abs(hash) % premiumWorkoutImages.length];
   };
 
   const currentDayPlan = currentPlan[selectedDay] || currentPlan[0];

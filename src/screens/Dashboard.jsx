@@ -26,6 +26,17 @@ export default function Dashboard() {
   const progressPercent = user.hasCompletedBodyScan ? 75 : 0;
   const dashOffset = 552.9 - (552.9 * progressPercent) / 100;
 
+  // Dynamic Calorie/Step calculations
+  const dailyCaloriesTarget = parseInt(aiPlan?.mealPlan?.macros?.kcal || user.aiPlan?.mealPlan?.dailyCalories || 0);
+  let estBurnedKcal = 0;
+  let estSteps = 0;
+  if (user.hasCompletedBodyScan && dailyCaloriesTarget > 0) {
+    const goalTitle = (user.profile?.goal || "").toLowerCase();
+    const isCutting = goalTitle.includes("lose") || goalTitle.includes("cut");
+    estBurnedKcal = isCutting ? dailyCaloriesTarget + 450 : Math.max(2000, dailyCaloriesTarget - 200);
+    estSteps = isCutting ? 11240 : 7500;
+  }
+
   return (
     <MobileContainer>
       <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden max-w-[430px] mx-auto bg-background-light dark:bg-background-dark border-x border-slate-200 dark:border-slate-800 italic-none">
@@ -182,21 +193,20 @@ export default function Dashboard() {
             </div>
           </section>
 
-            {/* Calorie Widget */}
             <section className="grid grid-cols-3 gap-4 p-4 rounded-xl bg-card-dark border border-slate-800 shrink-0">
               <div className="flex flex-col items-center text-center">
                 <span className="text-xs text-slate-500 mb-1 leading-none">Eaten</span>
-                <span className="text-lg font-bold text-accent-aqua">{aiPlan?.mealPlan?.macros?.kcal || user.aiPlan?.mealPlan?.dailyCalories || 0}</span>
+                <span className="text-lg font-bold text-accent-aqua">{dailyCaloriesTarget}</span>
                 <span className="text-[8px] text-slate-400 uppercase">kcal</span>
               </div>
               <div className="flex flex-col items-center text-center border-x border-slate-800">
                 <span className="text-xs text-slate-500 mb-1 leading-none">Burned</span>
-                <span className="text-lg font-bold text-primary">1,240</span>
+                <span className="text-lg font-bold text-primary">{estBurnedKcal.toLocaleString()}</span>
                 <span className="text-[8px] text-slate-400 uppercase">kcal</span>
               </div>
               <div className="flex flex-col items-center text-center">
                 <span className="text-xs text-slate-500 mb-1 leading-none">Steps</span>
-                <span className="text-lg font-bold text-white">8,420</span>
+                <span className="text-lg font-bold text-white">{estSteps.toLocaleString()}</span>
                 <span className="text-[8px] text-slate-400 uppercase">Today</span>
               </div>
             </section>

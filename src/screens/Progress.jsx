@@ -132,7 +132,7 @@ export default function Progress() {
                   
                   {/* Slider Divider Tool */}
                   <div className="absolute inset-0 w-1/2 overflow-hidden border-r-2 border-[#00d4ff] shadow-[5px_0_15px_rgba(0,212,255,0.5)] z-10">
-                    <img className="absolute inset-0 w-[200%] h-full object-cover opacity-50 grayscale" src="https://images.unsplash.com/photo-1548690312-e3b507d17a12?w=800&q=80" alt="Initial Baseline" />
+                    <img className="absolute inset-0 w-[200%] h-full object-cover opacity-50 grayscale" src={bodyScan.baselineImage || "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80"} alt="Initial Baseline" />
                     <div className="absolute bottom-6 left-6 bg-black/50 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border border-white/20 text-white">Baseline</div>
                   </div>
                   <div className="absolute bottom-6 right-6 bg-primary/60 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border border-white/20 text-white z-20">Current</div>
@@ -149,10 +149,10 @@ export default function Progress() {
           {activeTab === 'Badges' && (
             <section className="grid grid-cols-2 gap-4">
                {[
-                { name: '30 Day Streak', status: 'COMPLETED', color: 'accent-blue', icon: 'local_fire_department' },
-                { name: 'Iron Will', status: 'LEGENDARY', color: 'yellow-500', icon: 'military_tech' },
-                { name: '100kg Club', status: 'LOCKED', color: 'slate-400', icon: 'trophy', locked: true },
-                { name: 'Macro Ninja', status: 'COMPLETED', color: 'primary', icon: 'nutrition' }
+                { name: 'First Scan', status: user.hasCompletedBodyScan ? 'COMPLETED' : 'LOCKED', color: 'accent-blue', icon: 'local_fire_department', locked: !user.hasCompletedBodyScan },
+                { name: 'AI Plan Active', status: user.aiPlan ? 'ACTIVE' : 'LOCKED', color: 'yellow-500', icon: 'military_tech', locked: !user.aiPlan },
+                { name: 'Elite Body Fat', status: parseFloat(bodyScan.bodyFat) <= 15 ? 'UNLOCKED' : 'LOCKED', color: 'emerald-400', icon: 'trophy', locked: parseFloat(bodyScan.bodyFat) > 15 || bodyScan.bodyFat === "--" },
+                { name: 'Profile Ready', status: user.profile?.goal ? 'COMPLETED' : 'LOCKED', color: 'primary', icon: 'person', locked: !user.profile?.goal }
               ].map((badge, i) => (
                 <div key={i} className={`bg-[#161229] rounded-3xl border border-primary/20 flex flex-col items-center justify-center p-6 gap-3 shadow-xl ${badge.locked ? 'opacity-50 grayscale' : ''}`}>
                   <div className="relative">

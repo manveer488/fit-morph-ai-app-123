@@ -112,8 +112,7 @@ export default function BodyScan() {
       navigate('/dashboard');
     } catch (err) {
       console.error("AI Analysis failed:", err);
-      const errorMsg = err.message || "AI Analysis failed due to high server demand. Please try again in 5 minutes.";
-      alert(errorMsg);
+      alert(err.message || "AI Analysis failed due to high server demand. Please check your API quota or try again later.");
     } finally {
       setGenerating(false);
     }
@@ -136,7 +135,7 @@ export default function BodyScan() {
         </header>
 
         <main className="flex-1 overflow-y-auto px-6 pb-32">
-          {/* Hero Section */}
+          {/* Hero Section: Scan Display */}
           <section className="mt-6 text-center">
             <h2 className="text-3xl font-extrabold tracking-tight mb-2">3D Body Scan</h2>
             <p className="text-slate-500 dark:text-slate-400 text-sm mb-8">Full-body heatmap based on AI visual synthesis</p>
@@ -147,8 +146,8 @@ export default function BodyScan() {
                 <img src={imagePreview} className="absolute inset-0 w-full h-full object-cover animate-zoom" alt="Scan preview" />
               ) : (
                 <div 
-                  className="absolute inset-0 opacity-40 bg-center bg-no-repeat bg-contain" 
-                  style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBniWLhdwIz7nru9svkZEOkkrYQxGLUdsS8-ACEZnc-YNL7_4ZC1F1VbbqdBRRJiQH-CTYI-NlWxhIlxysclTipiBAnB1NfV-oMUuyJS67nFkE_WdKX7Tm4D1dGB1UOThRuYclCqnxCCNJuSTbO3eIExoVKRDfdhc7ZoanxTyVP20V-MEsWZDIyMulTnqk_-yzEbNTAsRNmI7_LU7fwo3FgYLZqa496vugksOk5KavyHM_HACxmNFT0NAHsT0UM9uoW02_akZm9KOO8')", backgroundPosition: 'center', backgroundSize: 'contain' }}
+                  className="absolute inset-0 opacity-30 bg-center bg-no-repeat bg-contain filter hue-rotate-180 brightness-150" 
+                  style={{ backgroundImage: "url('/assets/design/benefit_scan.png')", backgroundPosition: 'center', backgroundSize: 'contain' }}
                 ></div>
               )}
               
@@ -163,16 +162,13 @@ export default function BodyScan() {
               <div className="absolute top-1/2 right-1/4 w-3 h-3 rounded-full bg-accent-pink animate-pulse heatmap-glow"></div>
               <div className="absolute bottom-1/3 left-1/2 w-5 h-5 rounded-full bg-primary animate-pulse heatmap-glow"></div>
 
-              {/* Action Button Overlay */}
+              {/* Central Upload Button */}
               <button 
                 onClick={handleRetake}
                 className="relative z-10 flex flex-col items-center gap-3 bg-white/10 dark:bg-primary/30 backdrop-blur-xl px-8 py-6 rounded-2xl border border-white/20 hover:scale-105 transition-transform"
               >
-                <span className="material-symbols-outlined text-4xl text-white">photo_camera</span>
-                <span className="text-white font-bold opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                   {generating ? aiAnalysisStep : scanning ? scanSteps[scanStep] : 'Retake Body Photo'}
-                </span>
-                <span className="text-white font-bold group-hover:hidden">
+                <span className="material-symbols-outlined text-4xl text-white">{scanning || generating ? 'settings_suggest' : 'photo_camera'}</span>
+                <span className="text-white font-bold">
                    {generating ? aiAnalysisStep : scanning ? scanSteps[scanStep] : 'Retake Body Photo'}
                 </span>
               </button>
@@ -181,7 +177,7 @@ export default function BodyScan() {
 
           {/* Metrics Grid */}
           <section className="mt-8 grid grid-cols-2 gap-4">
-            <div className="glass-card p-4 rounded-2xl">
+            <div className="glass-panel p-4 rounded-2xl backdrop-blur-xl border border-white/10">
               <div className="flex items-center gap-2 mb-2">
                 <span className="material-symbols-outlined text-primary text-xl">monitor_weight</span>
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider leading-none">Body Fat</span>
@@ -194,7 +190,7 @@ export default function BodyScan() {
                 <div className="bg-primary h-full transition-all duration-1000" style={{ width: metrics.bodyFat !== '---' ? `${metrics.bodyFat}%` : '0%' }}></div>
               </div>
             </div>
-            <div className="glass-card p-4 rounded-2xl">
+            <div className="glass-panel p-4 rounded-2xl backdrop-blur-xl border border-white/10">
               <div className="flex items-center gap-2 mb-2">
                 <span className="material-symbols-outlined text-accent-cyan text-xl">fitness_center</span>
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider leading-none">Muscle Mass</span>
@@ -207,7 +203,7 @@ export default function BodyScan() {
                 <div className="bg-accent-cyan h-full transition-all duration-1000" style={{ width: metrics.muscleMass !== '---' ? '80%' : '0%' }}></div>
               </div>
             </div>
-            <div className="glass-card p-4 rounded-2xl col-span-2">
+            <div className="glass-panel p-4 rounded-2xl col-span-2 backdrop-blur-xl border border-white/10">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-accent-pink text-xl">accessibility_new</span>
@@ -258,21 +254,21 @@ export default function BodyScan() {
         </div>
 
         {/* Bottom Navigation Navbar */}
-        <nav className="fixed bottom-0 left-0 right-0 bg-background-light dark:bg-[#1e1b28] border-t border-slate-200 dark:border-[#2c273a] px-4 pb-8 pt-2 z-50">
+        <nav className="fixed bottom-0 left-0 right-0 bg-background-light dark:bg-[#1e1b28] border-t border-slate-200 dark:border-[#2c273a] px-4 pb-8 pt-2 z-50 shrink-0">
           <div className="flex gap-2">
             <button key="scan" className="flex flex-1 flex-col items-center justify-center gap-1 text-primary">
               <span className="material-symbols-outlined text-2xl fill-1">scan</span>
               <p className="text-[10px] font-bold uppercase tracking-widest">Scan</p>
             </button>
-            <button onClick={() => navigate('/workout')} className="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-[#a29abc]">
+            <button key="plan" onClick={() => navigate('/workout')} className="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-[#a29abc]">
               <span className="material-symbols-outlined text-2xl">calendar_today</span>
               <p className="text-[10px] font-bold uppercase tracking-widest">Plan</p>
             </button>
-            <button onClick={() => navigate('/progress')} className="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-[#a29abc]">
+            <button key="progress" onClick={() => navigate('/progress')} className="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-[#a29abc]">
               <span className="material-symbols-outlined text-2xl">leaderboard</span>
               <p className="text-[10px] font-bold uppercase tracking-widest">Progress</p>
             </button>
-            <button onClick={() => navigate('/settings')} className="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-[#a29abc]">
+            <button key="profile" onClick={() => navigate('/settings')} className="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-[#a29abc]">
               <span className="material-symbols-outlined text-2xl">person</span>
               <p className="text-[10px] font-bold uppercase tracking-widest">Profile</p>
             </button>
