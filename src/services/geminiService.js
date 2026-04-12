@@ -33,10 +33,6 @@ export async function validateAndAnalyzePhysique(base64Image, userProfile, previ
   ### TASK 1: VALIDATION
   1. **HUMAN CHECK**: Is this a full-body standing human? If it is just a body part (like an arm/leg) or a non-human object/animal, return Error.
   2. **ORIENTATION CHECK**: Is the person standing straight?
-  3. **RECURRENCE CHECK**: If a previous image is provided, compare it to the current one.
-     - ERROR if the current image is the **exact same file** as the previous one (user trying to cheat the weekly scan).
-     - ERROR if the current image is of a **different person** (user trying to scan someone else).
-     - SUCCESS only if it is a **new, different photo of the same person**.
 
   ### TASK 2: ANALYSIS (Only if validation succeeds)
   Provide a precise vision-based assessment of body fat % and muscle mass kg.
@@ -44,8 +40,8 @@ export async function validateAndAnalyzePhysique(base64Image, userProfile, previ
   ### OUTPUT FORMAT (STRICT JSON ONLY):
   {
     "isValid": boolean,
-    "errorType": "NONE" | "INVALID_BODY" | "SPOOF_DETECTED" | "DUPLICATE_PHOTO",
-    "userMessage": "NONE" | "Upload your full and straight body image." | "Upload your present image.",
+    "errorType": "NONE" | "INVALID_BODY",
+    "userMessage": "NONE" | "Upload your full and straight body image.",
     "metrics": {
       "predictedBodyFat": "Number only",
       "predictedMuscleMass": "Number only",
