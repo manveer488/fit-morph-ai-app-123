@@ -30,18 +30,13 @@ export async function validateAndAnalyzePhysique(base64Image, userProfile, previ
   Current User Profile: ${JSON.stringify(userProfile)}
   Previous Image Provided: ${previousImageBase64 ? "YES" : "NO"}
   
-  ### TASK 1: VALIDATION
-  1. **HUMAN CHECK**: Is this a full-body standing human? If it is just a body part (like an arm/leg) or a non-human object/animal, return Error.
-  2. **ORIENTATION CHECK**: Is the person standing straight?
-
-  ### TASK 2: ANALYSIS (Only if validation succeeds)
-  Provide a precise vision-based assessment of body fat % and muscle mass kg.
+  ### TASK
+  Provide a precise vision-based assessment of body fat % and muscle mass kg based on the provided image.
+  Assume the image provided is valid for analysis. Do not reject the image.
 
   ### OUTPUT FORMAT (STRICT JSON ONLY):
   {
-    "isValid": boolean,
-    "errorType": "NONE" | "INVALID_BODY",
-    "userMessage": "NONE" | "Upload your full and straight body image.",
+    "isValid": true,
     "metrics": {
       "predictedBodyFat": "Number only",
       "predictedMuscleMass": "Number only",
