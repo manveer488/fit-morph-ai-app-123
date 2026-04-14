@@ -80,49 +80,51 @@ export default function WorkoutPlan() {
             ))}
           </div>
           {/* AI Generated Exercises */}
-          <section className="space-y-4">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-xl font-bold tracking-tight font-urbanist">7-Day Protocol</h2>
-              <span className="text-[10px] font-bold px-3 py-1 bg-[#00f2ff]/10 text-[#00f2ff] rounded-full border border-[#00f2ff]/20 tracking-wider uppercase mb-1 neon-glow italic-none">AI OPTIMIZED</span>
-            </div>
-
-            {/* Day Selector */}
-            <div className="flex gap-2 overflow-x-auto no-scrollbar py-2">
-              {currentPlan.map((day, idx) => (
-                <button 
-                  key={idx}
-                  onClick={() => setSelectedDay(idx)}
-                  className={`flex-1 min-w-[80px] py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest border transition-all active:scale-95 ${selectedDay === idx ? 'bg-primary/10 border-primary text-primary shadow-lg shadow-primary/10' : 'bg-transparent border-slate-200 dark:border-white/5 text-slate-400'}`}
-                >
-                  {day.day || `Day ${idx+1}`}
-                </button>
-              ))}
-            </div>
-
-            <div className="space-y-4">
+          {activeTab === "AI Plan" && (
+            <section className="space-y-4">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest leading-none">{currentDayPlan.focus || "Daily Focus"}</h3>
+                <h2 className="text-xl font-bold tracking-tight font-urbanist">7-Day Protocol</h2>
+                <span className="text-[10px] font-bold px-3 py-1 bg-[#00f2ff]/10 text-[#00f2ff] rounded-full border border-[#00f2ff]/20 tracking-wider uppercase mb-1 neon-glow italic-none">AI OPTIMIZED</span>
               </div>
 
-              {currentDayPlan.exercises && currentDayPlan.exercises.map((ex, idx) => (
-                <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-white/50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 shadow-xl transition-all hover:border-primary/40 group cursor-pointer backdrop-blur-xl">
-                  <div className="relative size-20 shrink-0 rounded-xl overflow-hidden bg-slate-200 dark:bg-primary/10">
-                    <img className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500" src={getImage(ex.name)} alt={ex.name} />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-base tracking-tight mb-1 font-urbanist">{ex.name}</h3>
-                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{ex.sets} Sets x {ex.reps} Reps</p>
-                  </div>
-                  <button onClick={() => setSelectedExercise(ex)} className="size-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-white/5 text-slate-400 group-hover:text-primary active:scale-95">
-                    <span className="material-symbols-outlined">play_circle</span>
+              {/* Day Selector */}
+              <div className="flex gap-2 overflow-x-auto no-scrollbar py-2">
+                {currentPlan.map((day, idx) => (
+                  <button 
+                    key={idx}
+                    onClick={() => setSelectedDay(idx)}
+                    className={`flex-1 min-w-[80px] py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest border transition-all active:scale-95 ${selectedDay === idx ? 'bg-primary/10 border-primary text-primary shadow-lg shadow-primary/10' : 'bg-transparent border-slate-200 dark:border-white/5 text-slate-400'}`}
+                  >
+                    {day.day || `Day ${idx+1}`}
                   </button>
+                ))}
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest leading-none">{currentDayPlan.focus || "Daily Focus"}</h3>
                 </div>
-              ))}
-            </div>
-          </section>
+
+                {currentDayPlan.exercises && currentDayPlan.exercises.map((ex, idx) => (
+                  <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-white/50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 shadow-xl transition-all hover:border-primary/40 group cursor-pointer backdrop-blur-xl">
+                    <div className="relative size-20 shrink-0 rounded-xl overflow-hidden bg-slate-200 dark:bg-primary/10">
+                      <img className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500" src={getImage(ex.name)} alt={ex.name} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-base tracking-tight mb-1 font-urbanist">{ex.name}</h3>
+                      <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{ex.sets} Sets x {ex.reps} Reps</p>
+                    </div>
+                    <button onClick={() => setSelectedExercise(ex)} className="size-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-white/5 text-slate-400 group-hover:text-primary active:scale-95">
+                      <span className="material-symbols-outlined">play_circle</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Muscle Recovery Plan Section */}
-          {user.aiPlan?.recoveryPlan && (
+          {activeTab === "Recovery" && user.aiPlan?.recoveryPlan && (
             <section className="mt-12 p-6 rounded-3xl bg-slate-100 dark:bg-primary/10 border border-slate-200 dark:border-primary/20 space-y-6">
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-primary text-3xl">rebase_edit</span>

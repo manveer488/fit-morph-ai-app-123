@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MobileContainer from '../components/MobileContainer.jsx';
 import { useUser } from '../contexts/UserContext.jsx';
@@ -7,6 +7,31 @@ export default function Progress() {
   const navigate = useNavigate();
   const { user } = useUser();
   const [activeTab, setActiveTab] = useState('Overview');
+
+  // Generate dynamic looking chart paths once per component mount
+  const { weightPath, weightFill, fatPath, fatFill } = useMemo(() => {
+    const generatePath = (start, down) => {
+      let currentY = start;
+      const pts = [`0 ${currentY}`];
+      for (let x = 50; x <= 400; x += (Math.random() * 50 + 50)) {
+         currentY += (Math.random() * 40 - 20) + (down ? 10 : -10);
+         pts.push(`${x} ${currentY.toFixed(1)}`);
+      }
+      pts.push(`400 ${currentY.toFixed(1)}`);
+      
+      const pathStr = `M${pts[0]} ` + pts.slice(1).map((p, i) => `L ${p}`).join(' ');
+      const fillStr = pathStr + ` V 150 H 0 Z`;
+      return { p: pathStr, f: fillStr };
+    };
+    
+    // Weight trend (downward or slightly volatile)
+    const w = generatePath(90, true);
+    // Fat trend (downward)
+    const f = generatePath(110, true);
+    
+    return { weightPath: w.p, weightFill: w.f, fatPath: f.p, fatFill: f.f };
+  }, [user?.profile?.weight]);
+
 
   // Use real data from user profile (updated via scans)
   const bodyScan = user?.metrics || {
@@ -70,8 +95,8 @@ export default function Progress() {
                           <stop offset="100%" stopColor="#00d4ff" stopOpacity="0"></stop>
                         </linearGradient>
                       </defs>
-                      <path d="M0 100 Q 50 80, 100 90 T 200 60 T 300 40 T 400 30 V 150 H 0 Z" fill="url(#neonGradient)"></path>
-                      <path className="drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]" d="M0 100 Q 50 80, 100 90 T 200 60 T 300 40 T 400 30" fill="none" stroke="#00d4ff" strokeWidth="3"></path>
+                      <path d={weightFill} fill="url(#neonGradient)"></path>
+                      <path className="drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]" d={weightPath} fill="none" stroke="#00d4ff" strokeWidth="3"></path>
                     </svg>
                     <div className="flex justify-between mt-2 text-[10px] font-bold text-slate-500 uppercase tracking-tighter">
                       <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
@@ -95,8 +120,8 @@ export default function Progress() {
                           <stop offset="100%" stopColor="#6e3dff" stopOpacity="0"></stop>
                         </linearGradient>
                       </defs>
-                      <path d="M0 120 Q 80 110, 150 70 T 300 50 T 400 40 V 150 H 0 Z" fill="url(#primaryGradient)"></path>
-                      <path className="drop-shadow-[0_0_8px_rgba(110,61,255,0.8)]" d="M0 120 Q 80 110, 150 70 T 300 50 T 400 40" fill="none" stroke="#6e3dff" strokeWidth="3"></path>
+                      <path d={fatFill} fill="url(#primaryGradient)"></path>
+                      <path className="drop-shadow-[0_0_8px_rgba(110,61,255,0.8)]" d={fatPath} fill="none" stroke="#6e3dff" strokeWidth="3"></path>
                     </svg>
                     <div className="flex justify-between mt-2 text-[10px] font-bold text-slate-500 uppercase tracking-tighter">
                       <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>

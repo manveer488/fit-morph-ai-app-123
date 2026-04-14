@@ -107,7 +107,7 @@ Return the plan as a PURE JSON object (NO MARKDOWN).
   },
   "mealPlan": {
     "dailyCalories": 2000,
-    "macros": {"p": "150g", "c": "200g", "f": "60g"},
+    "macros": {"p": "XXg", "c": "XXg", "f": "XXg"},
     "days": [
       // EXACTLY 7 days
       { 
