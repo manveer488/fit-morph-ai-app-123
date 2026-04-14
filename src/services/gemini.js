@@ -1,10 +1,10 @@
-const GEMINI_API_KEY = "AIzaSyDSPuZ9TE5TKgfXs1L3eXYB5S89ptBMKIk";
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 export async function generateAIPlan(promptText) {
   try {
     // Using the /gemini proxy defined in vite.config.js
     const response = await fetch(
-      `/gemini/v1/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
+      `/gemini/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: "POST",
         headers: {

@@ -1,7 +1,7 @@
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_API_KEY_BACKUP = import.meta.env.VITE_GEMINI_API_KEY_BACKUP;
-const GEMINI_MODEL = "gemini-2.5-flash";
-const GEMINI_FALLBACK_MODEL = "gemini-2.5-flash";
+const GEMINI_MODEL = "gemini-3-flash-preview";
+const GEMINI_FALLBACK_MODEL = "gemini-flash-latest";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const isQuotaError = (msg, status) =>
